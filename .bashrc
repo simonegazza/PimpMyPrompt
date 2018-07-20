@@ -16,19 +16,26 @@ function error {
 function bgjobs {
 	[[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"
 }
-function gitPlugin{
+function gitPlugin () {
 # Get the status of the repo and chose a color accordingly
-    local status=`git status 2>&1`
+    status=`git status 2>&1`
     if [[ "$status" == *'Not a git repository'* ]]; then
-        echo ""
+        echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"
 		fi
-		for branch in `git status 2>&1 | grep branch | awk '{print $3}'`; do
+		for branch in `git status 2>&1 | grep "On branch" | awk '{print $3}'`; do
     	if [[ "$status" == *'working directory clean'* ]]; then
             # green banner with branch name
-						echo '\[\e[42m\] $branch \[\e[32m\]\[\e[49m\]$(arrow)'
-        else
-						echo '\[\e[43m\] $branch'
-						echo '\[\e[49m\]\[\e[33m\]$(arrow)'
+						echo -n "\[\e[43m\]\[\e[38;5;04m\]$(arrow)"
+						echo -n "\[\e[42m\] $branch \[\e[32m\]\[\e[49m\]$(arrow)"
+			fi
+      if [[ "$status" == *'Changes not staged for commit'* ]]; then 
+						echo -n "\[\e[43m\]\[\e[38;5;04m\]$(arrow) \[\e[30m\]"
+						echo -En $'\u2387'
+						echo -En "  $branch "
+						echo -En $'\u2295'
+						echo -n " \[\e[49m\]\[\e[33m\]$(arrow)"
+			fi
+			if [[ "$status" == *''* ]]; then 
 			fi
 		done
 }
@@ -48,9 +55,9 @@ if [ -x /usr/bin/dircolors ]; then #ls with more color
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
-alias cd ...='cd ../../'
-alias cd ....='cd ../../../'
-alias cd .....='cd ../../../../'
+#alias cd ...='cd ../../'
+#alias cd ....='cd ../../../'
+#alias cd .....='cd ../../../../'
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
@@ -78,6 +85,7 @@ PS1+='\[\e[39m@\]'									 #color for @
 PS1+='\[\e[33m\h\]\[\e[38;5;236m\] ' #host
 PS1+='\[\e[44m\]$(arrow)\[\e[30m\]'	 #backgound and text color for direcotries	
 PS1+=' \w'													 #relative folder
-PS1+='\[\e[34m\]\[\e[44m\] \[\e[49m\]\[\e[38;5;04m\]$(arrow)'		#last part of the first row (the ending block)
+PS1+='\[\e[34m\]\[\e[44m\] '				 #last part of the first row (the ending block)
+PS1+="$(gitPlugin)"
 PS1+='\n\[\e[38;5;39m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  '; #second row
 PS2='\[\e[38;5;39m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  ';
