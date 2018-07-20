@@ -17,7 +17,7 @@ function bgjobs {
 	[[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"
 }
 function gitPlugin () {
-# Get the status of the repo and chose a color accordingly
+	# Get the status of the repo and chose a color accordingly
     status=`git status 2>&1`
     if [[ "$status" == *'Not a git repository'* ]]; then
         echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"
@@ -94,7 +94,7 @@ PS1+='\[\e[33m\h\]\[\e[38;5;236m\] ' #host
 PS1+='\[\e[44m\]$(arrow)\[\e[30m\]'	 #backgound and text color for direcotries	
 PS1+=' \w'													 #relative folder
 PS1+='\[\e[34m\]\[\e[44m\] '				 #last part of the first row (the ending block)
-PS1+="$(gitPlugin)"
+PS1+="\[\e[43m\]\$(gitPlugin)"
 PS1+="\n"
 PS1+='\[\e[38;5;39m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  '; #second row
 PS2='\[\e[38;5;39m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  ';
