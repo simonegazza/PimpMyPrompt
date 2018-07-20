@@ -22,7 +22,7 @@ function gitPlugin () {
     if [[ "$status" == *'Not a git repository'* ]]; then
         echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"
 		fi
-		branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`
+			branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`
     	if [[ "$status" == *'publish your local commits'* ]]; then
             # green banner with branch name
 						echo -n "\[\e[42m\]\[\e[38;5;04m\]"						
