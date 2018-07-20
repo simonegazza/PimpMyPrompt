@@ -17,7 +17,20 @@ function bgjobs {
 	[[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"
 }
 function gitPlugin{
-	
+# Get the status of the repo and chose a color accordingly
+    local status=`git status 2>&1`
+    if [[ "$status" == *'Not a git repository'* ]]; then
+        echo ""
+		fi
+		for branch in `git status 2>&1 | grep branch | awk '{print $3}'`; do
+    	if [[ "$status" == *'working directory clean'* ]]; then
+            # green banner with branch name
+						echo '\[\e[42m\] $branch \[\e[32m\]\[\e[49m\]$(arrow)'
+        else
+						echo '\[\e[43m\] $branch'
+						echo '\[\e[49m\]\[\e[33m\]$(arrow)'
+			fi
+		done
 }
 
 HISTCONTROL=ignoreboth
