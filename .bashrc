@@ -1,7 +1,8 @@
 #!bin/bash
+SHELL=/bin/bash
 function color_name {
 	if [ "$USER" = "root" ]; then echo -e "\e[31m\u"
-	else echo -e "\e[33m\u"
+	else printf "\e[33m$USERNAME"
 	fi
 }
 function arrow { 
@@ -21,9 +22,9 @@ function gitPlugin () {
 		local	branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`
     
 		if [[ `git status 2>&1` =~ 'not a git repository' ]]; then
-        echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"	
+      echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"	
 		else if [[ `git status 2>&1 | wc -l` -eq 4 ]]; then
-        echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"	
+      echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"	
 		else if [[ `git status 2>&1` =~ 'publish your local commits' ]]; then
       # green banner with branch name
 			echo -n "\[\e[42m\]\[\e[38;5;04m\]"						
@@ -48,8 +49,8 @@ function gitPlugin () {
 		fi
 	fi
 fi
+echo -n "\[\e[0m\]"
 }
-
 HISTCONTROL=ignoreboth
 
 #aliases
@@ -84,19 +85,17 @@ shopt -s histappend
 # make "less" more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-
-
 PS1='\[\e[48;5;236m\]'							 #basckground color for the first part
 PS1+="\[\e[31m\]\$(error)"					 #the error for the last command
 PS1+="\[\e[93m\]\$(bgjobs)"					 #looking for background jobs
 PS1+=' \[\e[32m\]\D{%d/%m-%H:%M} ' 	 #date in strftime(3)
-PS1+="$(color_name)"								 #user color based on the user
+PS1+='$(color_name)'								 #user color based on the user
 PS1+='\[\e[39m@\]'									 #color for @
 PS1+='\[\e[33m\h\]\[\e[38;5;236m\] ' #host
 PS1+='\[\e[44m\]$(arrow)\[\e[30m\]'	 #backgound and text color for direcotries	
 PS1+=' \w'													 #relative folder
 PS1+='\[\e[34m\]\[\e[44m\] '				 #last part of the first row (the ending block)
-PS1+="$(gitPlugin)"
-PS1+="\n"
+PS1+='$(gitPlugin)'
+PS1+='\n'
 PS1+='\[\e[38;5;39m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  '; #second row
 PS2='\[\e[38;5;39m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  ';
