@@ -18,39 +18,50 @@ function bgjobs {
 	[[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"
 }
 function gitPlugin () {
-		# Get the status of the repo and chose a color accordingly
-		local	branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`
+		# Get the repo's branch for this repo, in this verrsion only a single branch is admitted
+
+		gitString=''
+		branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`
     
 		if [[ `git status 2>&1` =~ 'not a git repository' ]]; then
-      echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"	
+      gitString+="\e[49m\e[38;5;04m$(arrow)"	
+
 		else if [[ `git status 2>&1 | wc -l` -eq 4 ]]; then
-      echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"	
+      gitString+="\e[49m\e[38;5;04m$(arrow)"	
+
 		else if [[ `git status 2>&1` =~ 'publish your local commits' ]]; then
-      # green banner with branch name
-			echo -n "\[\e[42m\]\[\e[38;5;04m\]"						
-			echo -n "$(arrow) "
-			echo -En $'\u2387'
-			echo -n " \[\e[42m\] $branch \[\e[32m\]\[\e[49m\]$(arrow)"
+      # green banner
+			gitString+="\e[42m\e[38;5;04m"						
+			gitString+="$(arrow) "
+			gitString+=$'\u2387'
+			gitString+=" \e[42m $branch \e[32m\e[49m$(arrow)"
+
 		else 	
-			echo -n "\[\e[43m\]\[\e[38;5;04m\]$(arrow) \[\e[30m\]"
-			echo -En $'\u2387'
-			echo -En "  $branch "
+			# yellow banner 
+			gitString+="\e[43m\e[38;5;04m$(arrow) \e[30m"
+			gitString+=$'\u2387'
+			gitString+="  $branch "
+
 			if [[ `git status 2>&1` =~ 'Changes not staged for commit' ]]; then 
-				#a plus meaning you have to `git add .`
-				echo -En $'\u271A'
-				echo -n " "
+				# a plus meaning you have to `git add .`
+				gitString+=$'\u271A'
+				gitString+=" "
 			fi
+
 			if [[ `git status 2>&1` =~ 'Changes to be committed' ]]; then 
-				#a big dot meaning you have to 'git commit'
-				echo -En $'\u25CF'
-				echo -n " "
+				# a big dot meaning you have to 'git commit'
+				gitString+=$'\u25CF'
+				gitString+=" "
 			fi
-			echo -n "\[\e[49m\]\[\e[33m\]$(arrow)"
+			
+			# ending part of the string
+			gitString+="\e[49m\e[33m$(arrow)"
 		fi
 	fi
 fi
-echo -n "\[\e[0m\]"
+echo -ne "$gitString"
 }
+
 HISTCONTROL=ignoreboth
 
 #aliases
@@ -66,10 +77,11 @@ if [ -x /usr/bin/dircolors ]; then #ls with more color
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 fi
-#alias cd ...='cd ../../'
-#alias cd ....='cd ../../../'
-#alias cd .....='cd ../../../../'
-
+alias ..='cd ../' 
+alias ...='cd ../../'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+alias ......='cd ../../../../../'
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
 HISTFILESIZE=20000
@@ -85,6 +97,7 @@ shopt -s histappend
 # make "less" more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+
 PS1='\[\e[48;5;236m\]'							 #basckground color for the first part
 PS1+="\[\e[31m\]\$(error)"					 #the error for the last command
 PS1+="\[\e[93m\]\$(bgjobs)"					 #looking for background jobs
@@ -95,7 +108,9 @@ PS1+='\[\e[33m\h\]\[\e[38;5;236m\] ' #host
 PS1+='\[\e[44m\]$(arrow)\[\e[30m\]'	 #backgound and text color for direcotries	
 PS1+=' \w'													 #relative folder
 PS1+='\[\e[34m\]\[\e[44m\] '				 #last part of the first row (the ending block)
-PS1+='$(gitPlugin)'
-PS1+='\n'
-PS1+='\[\e[38;5;39m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  '; #second row
+PS1+="\$(gitPlugin)"
+PS1+='\[\e[49m\]\n'
+PS1+='\[\e[38;5;39m\]$(block)$(arrow)\[\e[0m\]  '; #second row
 PS2='\[\e[38;5;39m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  ';
+
+PROMPT_COMMAND="$PS1"
