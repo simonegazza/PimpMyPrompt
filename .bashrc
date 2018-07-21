@@ -18,8 +18,7 @@ function bgjobs {
 }
 function gitPlugin () {
 		# Get the status of the repo and chose a color accordingly
-    local status=`git status 2>&1`
-		local	branch=`echo $status | grep "On branch" | awk '{print $3}'`
+		local	branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`
     
 		if [[ `git status 2>&1` =~ 'not a git repository' ]]; then
         echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"	
@@ -35,12 +34,12 @@ function gitPlugin () {
 			echo -n "\[\e[43m\]\[\e[38;5;04m\]$(arrow) \[\e[30m\]"
 			echo -En $'\u2387'
 			echo -En "  $branch "
-			if [[ "$status" == *'Changes not staged for commit'* ]]; then 
+			if [[ `git status 2>&1` =~ 'Changes not staged for commit' ]]; then 
 				#a plus meaning you have to `git add .`
 				echo -En $'\u271A'
 				echo -n " "
 			fi
-			if [[ "$status" =~ *'Changes to be committed'* ]]; then 
+			if [[ `git status 2>&1` =~ 'Changes to be committed' ]]; then 
 				#a big dot meaning you have to 'git commit'
 				echo -En $'\u25CF'
 				echo -n " "
