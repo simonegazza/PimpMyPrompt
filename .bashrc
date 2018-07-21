@@ -17,35 +17,38 @@ function bgjobs {
 	[[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"
 }
 function gitPlugin () {
-	# Get the status of the repo and chose a color accordingly
-    status=`git status 2>&1`
-    if [[ "$status" == *'Not a git repository'* ]]; then
-        echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"
-		fi
-			branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`
-    	if [[ "$status" == *'publish your local commits'* ]]; then
-            # green banner with branch name
-						echo -n "\[\e[42m\]\[\e[38;5;04m\]"						
-						echo -n "$(arrow) "
-						echo -En $'\u2387'
-						echo -n " \[\e[42m\] $branch \[\e[32m\]\[\e[49m\]$(arrow)"
-			else 
-				#a yellow banner with the name of the branch 
-				echo -n "\[\e[43m\]\[\e[38;5;04m\]$(arrow) \[\e[30m\]"
-				echo -En $'\u2387'
-				echo -En "  $branch "
-      	if [[ "$status" == *'Changes not staged for commit'* ]]; then 
-							#a plus meaning you have to `git add .`
-							echo -En $'\u271A'
-							echo -n " "
-				fi
-				if [[ "$status" == *'Changes to be committed'* ]]; then 
-								#a big dot meaning you have to 'git commit'
-								echo -En $'\u25CF'
-								echo -n " "
-				fi	
-				echo -n "\[\e[49m\]\[\e[33m\]$(arrow)"
+		# Get the status of the repo and chose a color accordingly
+    local status=`git status 2>&1`
+		local	branch=`echo $status | grep "On branch" | awk '{print $3}'`
+    
+		if [[ `git status 2>&1` =~ 'not a git repository' ]]; then
+        echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"	
+		else if [[ `echo $status | wc -l` -eq 4 ]]; then
+        echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"	
+		else if [[ `git status 2>&1` =~ 'publish your local commits' ]]; then
+      # green banner with branch name
+			echo -n "\[\e[42m\]\[\e[38;5;04m\]"						
+			echo -n "$(arrow) "
+			echo -En $'\u2387'
+			echo -n " \[\e[42m\] $branch \[\e[32m\]\[\e[49m\]$(arrow)"
+		else 	
+			echo -n "\[\e[43m\]\[\e[38;5;04m\]$(arrow) \[\e[30m\]"
+			echo -En $'\u2387'
+			echo -En "  $branch "
+			if [[ "$status" == *'Changes not staged for commit'* ]]; then 
+				#a plus meaning you have to `git add .`
+				echo -En $'\u271A'
+				echo -n " "
 			fi
+			if [[ "$status" =~ *'Changes to be committed'* ]]; then 
+				#a big dot meaning you have to 'git commit'
+				echo -En $'\u25CF'
+				echo -n " "
+			fi
+			echo -n "\[\e[49m\]\[\e[33m\]$(arrow)"
+		fi
+	fi
+fi
 }
 
 HISTCONTROL=ignoreboth
@@ -94,7 +97,7 @@ PS1+='\[\e[33m\h\]\[\e[38;5;236m\] ' #host
 PS1+='\[\e[44m\]$(arrow)\[\e[30m\]'	 #backgound and text color for direcotries	
 PS1+=' \w'													 #relative folder
 PS1+='\[\e[34m\]\[\e[44m\] '				 #last part of the first row (the ending block)
-PS1+="\[\e[43m\]$(gitPlugin)"
+PS1+="$(gitPlugin)"
 PS1+="\n"
 PS1+='\[\e[38;5;39m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  '; #second row
 PS2='\[\e[38;5;39m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  ';
