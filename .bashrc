@@ -26,8 +26,10 @@ function gitPlugin () {
 		if [[ `git status 2>&1` =~ 'not a git repository' ]]; then
       gitString+="\e[49m\e[38;5;04m$(arrow)"	
 
-		else if [[ `git status 2>&1 | wc -l` -eq 4 ]]; then
-      gitString+="\e[49m\e[38;5;04m$(arrow)"	
+		else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]]; then
+      gitString+="\e[49m\e[38;5;04m$(arrow) "	
+#			gitString+=$'\u2387'
+#			gitString+=" \e[42m $branch \e[32m\e[49m$(arrow)"
 
 		else if [[ `git status 2>&1` =~ 'publish your local commits' ]]; then
       # green banner
