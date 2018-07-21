@@ -19,7 +19,7 @@ function bgjobs {
 }
 function gitPlugin () {
 		# Get the repo's branch for this repo, in this verrsion only a single branch is admitted
-
+		
 		gitString=''
 		branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`
     
@@ -27,12 +27,6 @@ function gitPlugin () {
       gitString+="\e[49m\e[38;5;04m$(arrow)"	
 
 		else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]]; then
-      gitString+="\e[49m\e[38;5;04m$(arrow) "	
-#			gitString+=$'\u2387'
-#			gitString+=" \e[42m $branch \e[32m\e[49m$(arrow)"
-
-		else if [[ `git status 2>&1` =~ 'publish your local commits' ]]; then
-      # green banner
 			gitString+="\e[42m\e[38;5;04m"						
 			gitString+="$(arrow) "
 			gitString+=$'\u2387'
@@ -55,12 +49,14 @@ function gitPlugin () {
 				gitString+=$'\u25CF'
 				gitString+=" "
 			fi
-			
+			if [[ `git status 2>&1` =~ 'Your branch is ahead of' ]]; then
+				gitString+=$'\u21D1'		
+				gitString+=" "
+			fi	
 			# ending part of the string
 			gitString+="\e[49m\e[33m$(arrow)"
 		fi
 	fi
-fi
 echo -ne "$gitString"
 }
 
@@ -110,7 +106,7 @@ PS1+='\[\e[33m\h\]\[\e[38;5;236m\] ' #host
 PS1+='\[\e[44m\]$(arrow)\[\e[30m\]'	 #backgound and text color for direcotries	
 PS1+=' \w'													 #relative folder
 PS1+='\[\e[34m\]\[\e[44m\] '				 #last part of the first row (the ending block)
-PS1+="\$(gitPlugin)"
+PS1+="$(gitPlugin)"
 PS1+='\[\e[49m\]\n'
 PS1+='\[\e[38;5;39m\]$(block)$(arrow)\[\e[0m\]  '; #second row
 PS2='\[\e[38;5;39m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  ';
