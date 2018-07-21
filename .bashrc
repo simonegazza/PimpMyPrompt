@@ -22,7 +22,7 @@ function gitPlugin () {
     
 		if [[ `git status 2>&1` =~ 'not a git repository' ]]; then
         echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"	
-		else if [[ `echo $status | wc -l` -eq 4 ]]; then
+		else if [[ `git status 2>&1 | wc -l` -eq 4 ]]; then
         echo -n "\[\e[49m\]\[\e[38;5;04m\]$(arrow)"	
 		else if [[ `git status 2>&1` =~ 'publish your local commits' ]]; then
       # green banner with branch name
