@@ -2,32 +2,31 @@
 SHELL=/bin/bash
 
 function color_name {
-	if [ "$USER" = "root" ]; then echo -e "\e[31m\u"
-	else printf "\e[33m$USERNAME"
+	if [ "$USER" = "root" ]; then echo -e "\e[31m\u"			#if the user is root than the username color is red
+	else printf "\e[33m$USERNAME"													#otherwise print just the user name
 	fi
 }
 function arrow { 
-	echo -E $'\u25B6'; 
+	echo -E $'\u25B6'; 					#uni-code for arrow
 }
 function block { 
-	echo -E $'\u25AC'; 
+	echo -E $'\u25AC'; 					#uni-code for the block
 }
 function error {
-	[[ $? -gt 0 ]] && echo -E '✖'
+	[[ $? -gt 0 ]] && echo -E '✖' 	#check is the last command was a failure
 }
 function bgjobs {
-	[[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"
+	[[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"		#check if the current user has backgorund jobs
 }
-function gitPlugin () {
+function gitPlugin () {				#git Plugin
 		# Get the repo's branch for this repo, in this verrsion only a single branch is admitted
-		
-		gitString=''
-		branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`
+		gitString=''			#value return string
+		branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`		#first current branch
     
-		if [[ `git status 2>&1` =~ 'not a git repository' ]]; then
+		if [[ `git status 2>&1` =~ 'not a git repository' ]]; then			#check if it is a repository and if not so, just print the arrow to end the line
       gitString+="\e[49m\e[34m$(arrow)"	
 
-		else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -eq "4" ]]; then
+		else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -eq "4" ]]; then 					#check if the branch is up to date with no mods, if so print a green banner with the branch symbol and the branch name
 			gitString+="\e[42m\e[34m"						
 			gitString+="$(arrow) "
 			gitString+="\e[30m"
@@ -110,21 +109,20 @@ shopt -s histappend
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 
-PS1=$(tput setab 0)
-PS1+=$(tput setaf 1)
-PS1+="\$(error)"					 #the error for the last command
-PS1+=$(tput setaf 3)
-PS1+="\$(bgjobs)"					 #looking for background jobs
-PS1+=' \[\e[32m\]\D{%d/%m-%T} ' 	 #dates in strftime(3)
-PS1+='$(color_name)'								 #user color based on the user
-PS1+='\[\e[39m@\]'									 #color for @
-PS1+='\[\e[33m\]\h\[\e[30m\] ' #host
-PS1+='\[\e[44m\]$(arrow)\[\e[30m\]'	 #backgound and text color for direcotries	
-PS1+=' \w'													 #relative folder
-PS1+='\[\e[34m\]\[\e[44m\] '				 #last part of the first row (the ending block)
-PS1+="\$(gitPlugin)"
-PS1+='\[\e[49m\]\n'
-PS1+='\[\e[34m\]$(block)$(arrow)\[\e[0m\]  '; #second row
-PS2='\[\e[34m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  ';
+PS1=$(tput setab 0)										#background color black
+PS1+=$(tput setaf 1)									#text color red
+PS1+="\$(error)"						 					#calling the error function to check if the last command failed
+PS1+=$(tput setaf 3)									#text color green
+PS1+="\$(bgjobs)"					 						#calling the function to check for backgorund jobs
+PS1+=' \[\e[32m\]\D{%d/%m-%T} ' 	 		#dates in strftime(3): Day/month - hour:minute:second
+PS1+='$(color_name)'								 	#calling the function to check user color based on the user
+PS1+='\[\e[39m@\]'									 	#color for @ (white)
+PS1+='\[\e[33m\]\h\[\e[30m\] ' 				#host
+PS1+='\[\e[44m\]$(arrow)\[\e[30m\]'	 	#ending black arrow	
+PS1+=' \w'													 	#relative folder path
+PS1+='\[\e[34m\]\[\e[44m\] '				 	#adjusting colours for git plugin
+PS1+="\$(gitPlugin)"									#calling the function for the git plugin
+PS1+='\[\e[49m\]\n'										#next line
+PS1+='\[\e[34m\]$(block)$(arrow)\[\e[0m\]  '; #second row with an arrow and a block
 
-#PROMPT_COMMAND="$PS1"
+PS2='\[\e[34m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  ';
