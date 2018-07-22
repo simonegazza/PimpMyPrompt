@@ -108,7 +108,6 @@ shopt -s histappend
 # make "less" more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-
 PS1=$(tput setab 0)										#background color black
 PS1+=$(tput setaf 1)									#text color red
 PS1+="\$(error)"						 					#calling the error function to check if the last command failed

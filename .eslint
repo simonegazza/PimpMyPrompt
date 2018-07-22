@@ -29,4 +29,4 @@
     "semi": ["error", "never"],
     "space-in-parens": ["error", "never"]
   }
-}
+
