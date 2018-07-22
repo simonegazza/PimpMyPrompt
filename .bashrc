@@ -27,9 +27,10 @@ function gitPlugin () {
 		if [[ `git status 2>&1` =~ 'not a git repository' ]]; then
       gitString+="\e[49m\e[34m$(arrow)"	
 
-		else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]]; then
+		else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -eq "4" ]]; then
 			gitString+="\e[42m\e[34m"						
 			gitString+="$(arrow) "
+			gitString+="\e[30m"
 			gitString+=$'\u2387'
 			gitString+=" \e[42m $branch \e[32m\e[49m$(arrow)"
 
@@ -64,8 +65,8 @@ echo -ne "$gitString"
 HISTCONTROL=ignoreboth
 
 #aliases
-alias lsa='/bin/ls -la'
-alias cl='/bin/clear'
+alias lsa='ls -la'
+alias cl='clear'
 if [ -x /usr/bin/dircolors ]; then #ls with more color
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
@@ -81,6 +82,18 @@ alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
+function GGG() {
+	if [ "$#" -eq "0" ]; then
+					message="Mods applied to the Repo"
+	else
+					message="$1"
+	fi
+
+	git add --all
+	git commit -m $message
+	git push
+}
+alias ggg=GGG
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
 HISTFILESIZE=20000
@@ -102,7 +115,7 @@ PS1+=$(tput setaf 1)
 PS1+="\$(error)"					 #the error for the last command
 PS1+=$(tput setaf 3)
 PS1+="\$(bgjobs)"					 #looking for background jobs
-PS1+=' \[\e[32m\]\D{%d/%m-%H:%M} ' 	 #date in strftime(3)
+PS1+=' \[\e[32m\]\D{%d/%m-%T} ' 	 #dates in strftime(3)
 PS1+='$(color_name)'								 #user color based on the user
 PS1+='\[\e[39m@\]'									 #color for @
 PS1+='\[\e[33m\]\h\[\e[30m\] ' #host
@@ -114,4 +127,4 @@ PS1+='\[\e[49m\]\n'
 PS1+='\[\e[34m\]$(block)$(arrow)\[\e[0m\]  '; #second row
 PS2='\[\e[34m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  ';
 
-PROMPT_COMMAND="$PS1"
+#PROMPT_COMMAND="$PS1"
