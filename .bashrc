@@ -102,6 +102,8 @@ function makeBackUpFile() {
 }
 alias mbf=makeBackUpFile
 alias filehost='vim /etc/hosts'
+alias asites='cd /etc/apache2/sites-enabled'
+alias nsites='cd /etc/nginx/sites-enabled'
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
