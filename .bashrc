@@ -1,5 +1,7 @@
 #!/bin/bash
 SHELL=/bin/bash
+EDITOR=vim
+COLUMNS=200
 
 function color_name {
 	if [ "$USER" = "root" ]; then echo -e "\e[31m\u"			#if the user is root than the username color is red
@@ -104,6 +106,11 @@ alias mbf=makeBackUpFile
 alias filehost='vim /etc/hosts'
 alias asites='cd /etc/apache2/sites-enabled'
 alias nsites='cd /etc/nginx/sites-enabled'
+alias restart='sudo systemctl restart '
+alias start='sudo systemctl start '
+alias reload='sudo systemctl reload '
+alias stop='sudo systemctl stop '
+
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
