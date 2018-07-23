@@ -94,7 +94,7 @@ function gitPushAll() {
 	git commit -m "$message"
 	git push
 }
-alias ggg='gitPushAll'
+alias ggg=gitPushAll
 alias cleardns="sudo /etc/init.d/dns-clean restart && echo DNS cache cleared"
 function makeBackUpFile() {
 	cp $1 $1.bak
