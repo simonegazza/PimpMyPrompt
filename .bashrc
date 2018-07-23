@@ -64,8 +64,10 @@ echo -ne "$gitString"
 HISTCONTROL=ignoreboth
 
 #aliases
+alias sudo='sudo '
 alias lsa='ls -la'
-alias cl='clear'
+alias c='clear'
+alias cl='clear;pwd;ls -la'
 if [ -x /usr/bin/dircolors ]; then #ls with more color
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
@@ -81,7 +83,7 @@ alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
-function GGG() {
+function gitPushAll() {
 	if [ "$#" -eq "0" ]; then
 					message="Mods applied to the Repo"
 	else
@@ -89,10 +91,18 @@ function GGG() {
 	fi
 
 	git add --all
-	git commit -m $message
+	git commit -m "$message"
 	git push
 }
-alias ggg=GGG
+alias ggg='gitPushAll'
+alias cleardns="sudo /etc/init.d/dns-clean restart && echo DNS cache cleared"
+function makeBackUpFile() {
+	cp $1 $1.bak
+	echo "made $1 backup file"
+}
+alias mbf=makeBackUpFile
+alias filehost='vim /etc/hosts'
+
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
 HISTFILESIZE=20000
@@ -108,10 +118,10 @@ shopt -s histappend
 # make "less" more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-PS1=$(tput setab 0)										#background color black
-PS1+=$(tput setaf 1)									#text color red
+PS1='\[\e[40m\]'											#background color black
+PS1+='\[\e[31m\]'											#text color red
 PS1+="\$(error)"						 					#calling the error function to check if the last command failed
-PS1+=$(tput setaf 3)									#text color green
+PS1+='\[\e[32m\]'											#text color green
 PS1+="\$(bgjobs)"					 						#calling the function to check for backgorund jobs
 PS1+=' \[\e[32m\]\D{%d/%m-%T} ' 	 		#dates in strftime(3): Day/month - hour:minute:second
 PS1+='$(color_name)'								 	#calling the function to check user color based on the user
