@@ -124,7 +124,7 @@ shopt -s histappend
 PS1='\[\e[40m\]'															#background color black
 PS1+='\[\e[31m\]'															#text color red
 PS1+="\$(error)"															#calling the error function to check if the last command failed
-PS1+='\[\e[32m\]'															#text color green
+PS1+='\[\e[33m\]'															#text color green
 PS1+="\$(bgjobs)"															#calling the function to check for backgorund jobs
 PS1+=' \[\e[32m\]\D{%d/%m-%T} '								#dates in strftime(3): Day/month - hour:minute:second
 PS1+='$(color_name)'													#calling the function to check user color based on the user
