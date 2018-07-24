@@ -25,7 +25,7 @@ function gitPlugin () {  #git Plugin
   gitString=''  #value return string
   branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`  #first current branch
     
-  if [[ `git status 2>&1` =~ 'not a git repository' ]]; then  #check if it is a repository and if not so, just print the arrow to end the line
+  if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then  #check if it is a repository and if not so, just print the arrow to end the line
     gitString+="\e[49m\e[34m$(arrow)"	
   else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -eq "4" ]]; then 					#check if the branch is up to date with no mods, if so print a green banner with the branch symbol and the branch name
     gitString+="\e[42m\e[34m"						
