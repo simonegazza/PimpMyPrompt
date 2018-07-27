@@ -12,7 +12,7 @@ else
 fi
 
 #Back-upping previous files
-if [[ -f ~/.bashrc -o -f ~/.bash_profile -o -f .vimrc -o -f .inputrc ]]; then
+if [[ -f ~/.bashrc || -f ~/.bash_profile || -f .vimrc || -f .inputrc ]]; then
   read -p "Previous configuration found, do you want to make a backup? [Y/n] " -n 1
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     mv ~/.bashrc ~/.bashrc.bak && echo ".bashrc backupped!"
