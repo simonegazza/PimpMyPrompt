@@ -2,8 +2,17 @@
 #Folder Reference
 PMP=`readlink -f .bashrc | rev | cut -d "/" -f2- | rev`
 
+#Asking for permission
+read -p "Are you sure do you want to install? [Y/n] " -n 1
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+  echo -n ""
+else 
+  echo "Installation stopped"
+  return 1
+fi
+
 #Back-upping previous files
-if [[ -f ~/.bashrc -o -f ~/.bash_profile -o -f .vimrc -o -f .inputrc]]; then
+if [[ -f ~/.bashrc -o -f ~/.bash_profile -o -f .vimrc -o -f .inputrc ]]; then
   read -p "Previous configuration found, do you want to make a backup? [Y/n] " -n 1
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     mv ~/.bashrc ~/.bashrc.bak && echo ".bashrc backupped!"
@@ -13,6 +22,7 @@ if [[ -f ~/.bashrc -o -f ~/.bash_profile -o -f .vimrc -o -f .inputrc]]; then
   else
     echo "Installation stopped"
     return 1
+  fi
 fi
 
 ln -s "$PMP/.bashrc" ~/.bashrc && echo ".bashrc installed!"
