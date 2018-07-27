@@ -4,19 +4,19 @@ function color_name {
   fi
 }
 function arrow {
-  echo -E $'\u25B6';  #unicode for arrow
+  echo -E $'\u25B6';  #uni-code for arrow
 }
 function block {
-  echo -E $'\u25AC';  #unicode for the block
+  echo -E $'\u25AC';  #uni-code for the block
 }
 function error {
   [[ $? -gt 0 ]] && echo -E '✖'  #check is the last command was a failure
 }
 function bgjobs {
-  [[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"  #check if the current user has backgorund jobs
+  [[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"  #check if the current user has background jobs
 }
 function gitPlugin () {  #git Plugin
-  # Get the repo's branch for this repo, in this verrsion only a single branch is admitted
+  # Get the repository's branch for this repo, in this version only a single branch is admitted
   gitString=''  #value return string
   branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`  #first current branch
 
@@ -68,4 +68,8 @@ function gitPushAll() {
 function makeBackUpFile() {
 	cp $1 $1.bak
 	echo "made $1 backup file"
+}
+function sshrc() {
+  scp -C "$PMP/.sshrc" "$1:/tmp/.sshrc"
+  ssh -t $1 'export PMP="/tmp/PimpMyPrompt"; exec /bin/bash; source $PMP'
 }

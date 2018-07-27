@@ -2,3 +2,6 @@ set completion-ignore-case On
 set colored-stats On
 set show-all-if-ambiguous On
 set show-all-if-unmodified On
+"\e[A":history-search-backward
+"\e[B":history-search-forward
+set echo-control-characters off

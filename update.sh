@@ -1,3 +1,4 @@
+#!/bin/bash
 if [[ `git status 2>&1` =~ 'Your branch is behind' ]]; then 
 	if [ "$1" == "--force" -o "$1" == "-f" ]; then
 		git pull origin master
@@ -8,6 +9,6 @@ if [[ `git status 2>&1` =~ 'Your branch is behind' ]]; then
 			git pull origin master
 		fi
 	fi
-#else 
-#	echo "Nothing to update"
+else 
+	echo "Nothing to update"
 fi

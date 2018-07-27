@@ -1,5 +1,24 @@
+#!/bin/bash
+#Folder Reference
 PMP=`readlink -f .bashrc | rev | cut -d "/" -f2- | rev`
-mv ~/.bashrc ~/.bashrc.bak && echo ".bashrc back-upped!"
-mv ~/.bash_profile ~/.bash_profile.bak && echo ".bash_profile back-upped!" 
+
+#Back-upping previous files
+if [[ -f ~/.bashrc -o -f ~/.bash_profile -o -f .vimrc ]]; then
+  read -p "Previous configuration found, do you want to make a backup? [Y/n] " -n 1
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    mv ~/.bashrc ~/.bashrc.bak && echo ".bashrc backupped!"
+    mv ~/.bash_profile ~/.bash_profile.bak && echo ".bash_profile backupped!" 
+    mv ~/.vimrc ~/.vimrc.bak && echo ".vimrc backupped!"
+  else
+    echo "Installation stopped"
+    return 1
+fi
+
 ln -s "$PMP/.bashrc" ~/.bashrc && echo ".bashrc installed!"
 ln -s "$PMP/.bash_profile" ~/.bash_profile && echo ".bash_profile installed!"
+
+
+#vim installation part
+ln -s "$PMP/.vimrc" .vimrc
+mkdir -p ~/.vim/colors 2>&1
+ln -s "$PMP/vim-theme/*" ~/.vim/colors 
