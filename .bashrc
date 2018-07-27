@@ -41,3 +41,4 @@ PS1+='\[\e[49m\]\n'                           #next line
 PS1+='\[\e[34m\]$(block)$(arrow)\[\e[0m\]  '; #second row with an arrow and a block
 
 PS2='\[\e[34m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  ';
+

@@ -73,3 +73,4 @@ function sshrc() {
   scp -C "$PMP/.sshrc" "$1:/tmp/.sshrc"
   ssh -t $1 'export PMP="/tmp/PimpMyPrompt"; exec /bin/bash; source "$PMP/.bashrc"'
 }
+

@@ -1,7 +1,7 @@
-PATH="$PATH:/usr/local/bin"
-SHELL=/bin/bash
-EDITOR=vim
-PMP="/tmp/.sshrc"
+export PATH="$PATH:/usr/local/bin"
+export SHELL=/bin/bash
+export EDITOR=vim
+export PMP="/tmp/.sshrc"
 function color_name {
   if [ "$USER" = "root" ]; then echo -e "\e[31m\u"  #if the user is root than the username color is red
   else echo -e "\e[33m$USER"  #otherwise print just the user name
@@ -99,6 +99,7 @@ HISTCONTROL=ignoreboth
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
 HISTFILESIZE=20000
+set completion-ignore-case On
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -127,3 +128,4 @@ PS1+='\[\e[49m\]\n'                           #next line
 PS1+='\[\e[34m\]$(block)$(arrow)\[\e[0m\]  '; #second row with an arrow and a block
 
 PS2='\[\e[34m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  ';
+

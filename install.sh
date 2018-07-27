@@ -34,3 +34,4 @@ ln -s "$PMP/.inputrc" ~/.bashrc && echo ".inputrc installed!"
 ln -s "$PMP/.vimrc" .vimrc
 mkdir -p ~/.vim/colors 2>&1
 ln -s "$PMP/vim-theme/*" ~/.vim/colors 
+
