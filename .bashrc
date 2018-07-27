@@ -5,7 +5,7 @@ source "$PMP"/customized/*
 source "$PMP"/.functions
 source "$PMP"/.aliases
 source "$PMP"/.env
-source "$PMP"/.inputrc
+bind -f "$PMP"/.inputrc
 
 "$PMP"/update.sh
 

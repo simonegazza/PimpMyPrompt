@@ -26,37 +26,37 @@ function gitPlugin () {  #git Plugin
 
   if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then  #check if it is a repository and if not so, just print the arrow to end the line
     gitString+="\e[49m\e[34m$(arrow)"
-  else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -eq "4" ]]; then 					#check if the branch is up to date with no mods, if so print a green banner with the branch symbol and the branch name
+  else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -eq "4" ]]; then  #check if the branch is up to date with no mods, if so print a green banner with the branch symbol and the branch name
     gitString+="\e[42m\e[34m"
-		gitString+="$(arrow) "
-		gitString+="\e[30m"
-		gitString+=$'\u2387'
-		gitString+=" \e[42m $branch \e[32m\e[49m$(arrow)"
-	else
-		# yellow banner
-		gitString+="\e[43m\e[38;5;04m$(arrow) \e[30m"
-		gitString+=$'\u2387'
-		gitString+="  $branch "
+    gitString+="$(arrow) "
+    gitString+="\e[30m"
+    gitString+=$'\u2387'
+    gitString+=" \e[42m $branch \e[32m\e[49m$(arrow)"
+    else
+      # yellow banner
+      gitString+="\e[43m\e[38;5;04m$(arrow) \e[30m"
+      gitString+=$'\u2387'
+      gitString+="  $branch "
 
-		if [[ `git status 2>&1` =~ 'Changes not staged for commit' ]]; then
-			# a plus meaning you have to `git add .`
-			gitString+=$'\u271A'
-			gitString+=" "
-		fi
-		if [[ `git status 2>&1` =~ 'Changes to be committed' ]]; then
-			# a big dot meaning you have to 'git commit'
-			gitString+=$'\u25CF'
-			gitString+=" "
-		fi
-		if [[ `git status 2>&1` =~ 'Your branch is ahead of' ]]; then
-			gitString+=$'\u21D1'
-			gitString+=" "
-		fi
-		# ending part of the string
-		gitString+="\e[49m\e[33m$(arrow)"
-		fi
-	fi
-echo -ne "$gitString"
+      if [[ `git status 2>&1` =~ 'Changes not staged for commit' ]]; then
+        # a plus meaning you have to `git add .`
+        gitString+=$'\u271A'
+        gitString+=" "
+      fi
+      if [[ `git status 2>&1` =~ 'Changes to be committed' ]]; then
+        # a big dot meaning you have to 'git commit'
+        gitString+=$'\u25CF'
+        gitString+=" "
+      fi
+      if [[ `git status 2>&1` =~ 'Your branch is ahead of' ]]; then
+        gitString+=$'\u21D1'
+        gitString+=" "
+      fi
+      # ending part of the string
+      gitString+="\e[49m\e[33m$(arrow)"
+    fi
+  fi
+  echo -ne "$gitString"
 }
 function makeBackUpFile() {
 	cp $1 $1.bak
