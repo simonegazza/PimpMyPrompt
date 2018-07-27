@@ -4,7 +4,7 @@ This repository contains all the file needed to mimic the agnoster theme for zsh
 ## Prerequisites
 bash 4.2 or greater
 
-##Optional feature
+## Optional feature
 custom .vimrc file for Vim8
 
 ## Installation
