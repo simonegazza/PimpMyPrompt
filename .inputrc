@@ -1,0 +1,4 @@
+set completion-ignore-case On
+set colored-stats On
+set show-all-if-ambiguous On
+set show-all-if-unmodified On

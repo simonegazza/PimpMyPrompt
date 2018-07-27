@@ -7,4 +7,4 @@ You can add your features in the customized directory! Just add a file there and
 bash 4.2 or grater
 
 ## Installation
-Just run ./install.sh adn you will be ready to go!
+Just run ./install.sh and you will be ready to go!

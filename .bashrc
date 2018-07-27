@@ -5,6 +5,9 @@ source "$PMP"/customized/*
 source "$PMP"/.functions
 source "$PMP"/.aliases
 source "$PMP"/.env
+source "$PMP"/.inputrc
+
+"$PMP"/update.sh
 
 HISTCONTROL=ignoreboth
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
