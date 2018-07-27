@@ -1,10 +1,10 @@
 #!/bin/bash
-SHELL=/bin/bash
-EDITOR=vim
-COLUMNS=200
+PMP=`ls -la ~ | grep ".bashrc" | awk -F '->' '{print $2}' | tr -d " \t\n\r" | xargs readlink -f | rev | cut -d "/" -f2- | rev`
 
-source ~/Desktop/PimpMyPrompt/.functions
-source ~/Desktop/PimpMyPrompt/.aliases
+source "$PMP"/.customized
+source "$PMP"/.functions
+source "$PMP"/.aliases
+source "$PMP"/.env
 
 HISTCONTROL=ignoreboth
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
