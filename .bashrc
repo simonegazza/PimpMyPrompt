@@ -5,8 +5,9 @@ source "$PMP"/customized/*
 source "$PMP"/.functions
 source "$PMP"/.aliases
 source "$PMP"/.env
-bind -f "$PMP"/.inputrc
-
+if [[ `echo -$` =~ i ]]; then
+  bind -f "$PMP"/.inputrc
+fi
 "$PMP"/update.sh
 
 HISTCONTROL=ignorespace
