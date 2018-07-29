@@ -23,48 +23,52 @@ function gitPlugin () {  #git Plugin
   # Get the repository's branch for this repo, in this version only a single branch is admitted
   gitString=''  #value return string
   branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`  #first current branch
-
-  if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then  #check if it is a repository and if not so, just print the arrow to end the line
-    gitString+="\e[49m\e[34m$(arrow)"
-  else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -eq "4" ]]; then  #check if the branch is up to date with no mods, if so print a green banner with the branch symbol and the branch name
-    gitString+="\e[42m\e[34m"
-    gitString+="$(arrow) "
-    gitString+="\e[30m"
-    gitString+=$'\u2387'
-    gitString+=" \e[42m $branch \e[32m\e[49m$(arrow)"
-    else
-      # yellow banner
-      gitString+="\e[43m\e[38;5;04m$(arrow) \e[30m"
+  if [[ `git --version 2>/dev/null` =~ 'git version' ]]; then #checking if git is installed
+    if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then  #check if it is a repository and if not so, just print the arrow to end the line
+      gitString+="\e[49m\e[34m$(arrow)"
+    else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -eq "4" ]]; then  #check if the branch is up to date with no mods, if so print a green banner with the branch symbol and the branch name
+      gitString+="\e[42m\e[34m"
+      gitString+="$(arrow) "
+      gitString+="\e[30m"
       gitString+=$'\u2387'
-      gitString+="  $branch "
+      gitString+=" \e[42m $branch \e[32m\e[49m$(arrow)"
+      else
+        # yellow banner
+        gitString+="\e[43m\e[38;5;04m$(arrow) \e[30m"
+        gitString+=$'\u2387'
+        gitString+="  $branch "
 
-      if [[ `git status 2>&1` =~ 'Changes not staged for commit' ]]; then
-        # a plus meaning you have to `git add .`
-        gitString+=$'\u271A'
-        gitString+=" "
+        if [[ `git status 2>&1` =~ 'Changes not staged for commit' ]]; then
+          # a plus meaning you have to `git add .`
+          gitString+=$'\u271A'
+          gitString+=" "
+        fi
+        if [[ `git status 2>&1` =~ 'Changes to be committed' ]]; then
+          # a big dot meaning you have to 'git commit'
+          gitString+=$'\u25CF'
+          gitString+=" "
+        fi
+        if [[ `git status 2>&1` =~ 'Your branch is ahead of' ]]; then
+          gitString+=$'\u21D1'
+          gitString+=" "
+        fi
+        # ending part of the string
+        gitString+="\e[49m\e[33m$(arrow)"
       fi
-      if [[ `git status 2>&1` =~ 'Changes to be committed' ]]; then
-        # a big dot meaning you have to 'git commit'
-        gitString+=$'\u25CF'
-        gitString+=" "
-      fi
-      if [[ `git status 2>&1` =~ 'Your branch is ahead of' ]]; then
-        gitString+=$'\u21D1'
-        gitString+=" "
-      fi
-      # ending part of the string
-      gitString+="\e[49m\e[33m$(arrow)"
     fi
+    echo -ne "$gitString"
+  else 
+    echo -ne "\e[49m\e[34m$(arrow)"
   fi
-  echo -ne "$gitString"
 }
 function makeBackUpFile() {
 	cp $1 $1.bak
 	echo "made $1 backup file"
 }
-function sshrc() {
-  scp -C "$PMP/.sshrc" "$1:/tmp/PimpMyPrompt/"
-  ssh -t $1 'export PMP="/tmp/PimpMyPrompt"; exec /bin/bash; source $PMP'
+function sshrc() { 
+  rsync -chazPq "$PMP/.sshrc" "$1:/tmp/.sshrc"
+  ssh -t $1 'echo "source /tmp/.sshrc" >> ~/.bashrc; export PMP="/tmp"; exec bash -i'
+  ssh $1 "sed -i '$ d' ~/.bashrc"
 }
 alias sudo='sudo '
 alias lsa='ls -la'
@@ -94,7 +98,7 @@ alias start='sudo systemctl start '
 alias reload='sudo systemctl reload '
 alias stop='sudo systemctl stop '
 alias install='sudo apt-get install'
-#alias s='sshrc'
+alias s='sshrc'
 HISTCONTROL=ignoreboth
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
@@ -120,7 +124,7 @@ PS1+=' \[\e[32m\]\D{%d/%m-%T} '               #dates in strftime(3): Day/month -
 PS1+='$(color_name)'                          #calling the function to check user color based on the user
 PS1+='\[\e[39m@\]'                            #color for @ (white)
 PS1+='\[\e[33m\]\h\[\e[30m\] '                #host
-PS1+='\[\e[44m\]$(arrow)\[\e[30m\]'           #ending black arrow	
+PS1+='\[\e[44m\]$(arrow)\[\e[30m\] '          #ending black arrow	
 PS1+='\w'                                     #relative folder path
 PS1+='\[\e[34m\]\[\e[44m\] '                  #adjusting colours for git plugin
 PS1+="\$(gitPlugin)"                          #calling the function for the git plugin
