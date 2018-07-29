@@ -75,6 +75,6 @@ function makeBackUpFile() {
 function sshrc() {
   rsync -chazPq "$PMP/.sshrc" "$1:/tmp/.sshrc"
   ssh -t $1 'echo "source /tmp/.sshrc" >> ~/.bashrc; export PMP="/tmp"; exec bash -i'
-  ssh $1 "sed -i '$ d' ~/.bashrc"
+  ssh $1 "sed -i '$ d' ~/.bashrc; rm /tmp/.sshrc"
 }
 

@@ -2,8 +2,10 @@
 #Folder Reference
 PMP=`readlink -f .bashrc | rev | cut -d "/" -f2- | rev`
 
+(
 #Asking for permission
 read -p "Are you sure do you want to install? [Y/n] " -n 1
+echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo -n ""
 else 
@@ -34,4 +36,4 @@ ln -s "$PMP/.inputrc" ~/.bashrc && echo ".inputrc installed!"
 ln -s "$PMP/.vimrc" .vimrc
 mkdir -p ~/.vim/colors 2>&1
 ln -s "$PMP/vim-theme/*" ~/.vim/colors 
-
+) 2>/dev/null
