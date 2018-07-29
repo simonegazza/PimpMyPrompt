@@ -18,7 +18,7 @@ function bgjobs {
 function gitPlugin () {  #git Plugin
   # Get the repository's branch for this repo, in this version only a single branch is admitted
   gitString=''  #value return string
-  branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`  #first current branch
+  branch=`git symbolic-ref --short HEAD`  #first current branch
   if [[ `git --version` =~ 'git version' ]]; then #checking if git is installed
     if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then  #check if it is a repository and if not so, just print the arrow to end the line
       gitString+="\e[49m\e[34m$(arrow)"
