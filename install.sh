@@ -4,7 +4,8 @@ PMP=`readlink -f .bashrc | rev | cut -d "/" -f2- | rev`
 
 (
 #Asking for permission
-read -p "Are you sure do you want to install? [Y/n] " -n 1
+echo -n "Are you sure do you want to install? [Y/n] "
+read -n 1
 echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo -n ""
@@ -15,7 +16,9 @@ fi
 
 #Back-upping previous files
 if [[ -f ~/.bashrc || -f ~/.bash_profile || -f .vimrc || -f .inputrc ]]; then
-  read -p "Previous configuration found, do you want to make a backup? [Y/n] " -n 1
+  echo -n "Previous configuration found, do you want to make a backup? [Y/n] "
+  read -n 1
+  echo ""
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     mv ~/.bashrc ~/.bashrc.bak && echo ".bashrc backupped!"
     mv ~/.bash_profile ~/.bash_profile.bak && echo ".bash_profile backupped!" 
