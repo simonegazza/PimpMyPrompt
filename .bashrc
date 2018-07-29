@@ -1,7 +1,7 @@
 #!/bin/bash
 PMP=`ls -la ~ | grep ".bashrc" | awk -F '->' '{print $2}' | tr -d " \t\n\r" | xargs readlink -f | rev | cut -d "/" -f2- | rev`
 
-source "$PMP"/customized/*
+[[ -d "$PMP/customized" ]] && source "$PMP"/customized/*
 source "$PMP"/.functions
 source "$PMP"/.aliases
 source "$PMP"/.env
