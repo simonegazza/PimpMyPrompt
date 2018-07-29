@@ -10,4 +10,3 @@ if [[ `git status 2>&1` =~ 'Your branch is behind' ]]; then
     fi
   fi
 fi
-

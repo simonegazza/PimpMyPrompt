@@ -3,4 +3,3 @@ set colored-stats On
 set show-all-if-ambiguous On
 set show-all-if-unmodified On
 set echo-control-characters off
-

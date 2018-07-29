@@ -2,6 +2,7 @@ export PATH="$PATH:/usr/local/bin"
 export SHELL=/bin/bash
 export EDITOR=vim
 export PMP="/tmp/.sshrc"
+
 function color_name {
   if [ "$USER" = "root" ]; then echo -e "\e[31m\u"  #if the user is root than the username color is red
   else echo -e "\e[33m$USER"  #otherwise print just the user name
@@ -22,7 +23,7 @@ function bgjobs {
 function gitPlugin () {  #git Plugin
   # Get the repository's branch for this repo, in this version only a single branch is admitted
   gitString=''  #value return string
-  branch=`git status 2>&1 | grep "On branch" | awk '{print $3}'`  #first current branch
+  branch=` git symbolic-ref --short HEAD`  #first current branch
   if [[ `git --version 2>/dev/null` =~ 'git version' ]]; then #checking if git is installed
     if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then  #check if it is a repository and if not so, just print the arrow to end the line
       gitString+="\e[49m\e[34m$(arrow)"
@@ -56,7 +57,7 @@ function gitPlugin () {  #git Plugin
         gitString+="\e[49m\e[33m$(arrow)"
       fi
     fi
-    echo -ne "$gitString"
+  echo -ne "$gitString"
   else 
     echo -ne "\e[49m\e[34m$(arrow)"
   fi
@@ -99,7 +100,8 @@ alias reload='sudo systemctl reload '
 alias stop='sudo systemctl stop '
 alias install='sudo apt-get install'
 alias s='sshrc'
-HISTCONTROL=ignoreboth
+
+HISTCONTROL=ignorespace
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
 HISTFILESIZE=20000
@@ -132,4 +134,3 @@ PS1+='\[\e[49m\]\n'                           #next line
 PS1+='\[\e[34m\]$(block)$(arrow)\[\e[0m\]  '; #second row with an arrow and a block
 
 PS2='\[\e[34m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  ';
-

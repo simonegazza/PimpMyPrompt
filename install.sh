@@ -1,4 +1,5 @@
 #!/bin/bash
+
 #Folder Reference
 PMP=`readlink -f .bashrc | rev | cut -d "/" -f2- | rev`
 
@@ -30,10 +31,10 @@ if [[ -f ~/.bashrc || -f ~/.bash_profile || -f .vimrc || -f .inputrc ]]; then
   fi
 fi
 
+#making links so that bashrc can be updated 
 ln -s "$PMP/.bashrc" ~/.bashrc && echo ".bashrc installed!"
 ln -s "$PMP/.bash_profile" ~/.bash_profile && echo ".bash_profile installed!"
 ln -s "$PMP/.inputrc" ~/.bashrc && echo ".inputrc installed!"
-
 
 #vim installation part
 ln -s "$PMP/.vimrc" .vimrc

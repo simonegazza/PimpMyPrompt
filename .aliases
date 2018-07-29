@@ -28,4 +28,3 @@ alias reload='sudo systemctl reload '
 alias stop='sudo systemctl stop '
 alias install='sudo apt-get install'
 alias s='sshrc'
-

@@ -28,53 +28,52 @@ function gitPlugin () {  #git Plugin
       gitString+="\e[30m"
       gitString+=$'\u2387'
       gitString+=" \e[42m $branch \e[32m\e[49m$(arrow)"
-        else
-          # yellow banner
-          gitString+="\e[43m\e[38;5;04m$(arrow) \e[30m"
-          gitString+=$'\u2387'
-          gitString+="  $branch "
+      else
+        # yellow banner
+        gitString+="\e[43m\e[38;5;04m$(arrow) \e[30m"
+        gitString+=$'\u2387'
+        gitString+="  $branch "
 
-          if [[ `git status 2>&1` =~ 'Changes not staged for commit' ]]; then
-                  # a plus meaning you have to `git add .`
-                  gitString+=$'\u271A'
-                  gitString+=" "
-          fi
-          if [[ `git status 2>&1` =~ 'Changes to be committed' ]]; then
-                  # a big dot meaning you have to 'git commit'
-                  gitString+=$'\u25CF'
-                  gitString+=" "
-          fi
-          if [[ `git status 2>&1` =~ 'Your branch is ahead of' ]]; then
-                  gitString+=$'\u21D1'
-                  gitString+=" "
-          fi
-          # ending part of the string
-          gitString+="\e[49m\e[33m$(arrow)"
-          fi
-	fi
-    echo -ne "$gitString"
+        if [[ `git status 2>&1` =~ 'Changes not staged for commit' ]]; then
+          # a plus meaning you have to `git add .`
+          gitString+=$'\u271A'
+          gitString+=" "
+        fi
+        if [[ `git status 2>&1` =~ 'Changes to be committed' ]]; then
+          # a big dot meaning you have to 'git commit'
+          gitString+=$'\u25CF'
+          gitString+=" "
+        fi
+        if [[ `git status 2>&1` =~ 'Your branch is ahead of' ]]; then
+          gitString+=$'\u21D1'
+          gitString+=" "
+        fi
+        # ending part of the string
+        gitString+="\e[49m\e[33m$(arrow)"
+      fi
+    fi
+  echo -ne "$gitString"
   else 
-      echo -ne "\e[49m\e[34m$(arrow)" #if git isn't installed just always print the arrow
+    echo -ne "\e[49m\e[34m$(arrow)" #if git isn't installed just always print the arrow
   fi
 }
 function gitPushAll() {
-	if [ "$#" -eq "0" ]; then
-		message="Mods applied to the Repo"
-	else
-		message="$1"
-	fi
+  if [ "$#" -eq "0" ]; then
+    message="Mods applied to the Repo"
+  else
+    message="$1"
+  fi
 
-	git add --all
-	git commit -m "$message"
-	git push
+  git add --all
+  git commit -m "$message"
+  git push
 }
 function makeBackUpFile() {
-	cp $1 $1.bak
-	echo "made $1 backup file"
+  cp $1 $1.bak
+  echo "made $1 backup file"
 }
 function sshrc() {
   rsync -chazPq "$PMP/.sshrc" "$1:/tmp/.sshrc"
   ssh -t $1 'echo "source /tmp/.sshrc" >> ~/.bashrc; export PMP="/tmp"; exec bash -i'
   ssh $1 "sed -i '$ d' ~/.bashrc; rm /tmp/.sshrc"
 }
-

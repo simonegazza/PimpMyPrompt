@@ -13,4 +13,3 @@ set wildmenu
 set noerrorbells
 set title
 set history=1000
-
