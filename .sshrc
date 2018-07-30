@@ -23,7 +23,7 @@ function bgjobs {
 function gitPlugin () {  #git Plugin
   # Get the repository's branch for this repo, in this version only a single branch is admitted
   gitString=''  #value return string
-  branch=` git symbolic-ref --short HEAD`  #first current branch
+  branch=`git symbolic-ref --short HEAD 2>/dev/null`  #first current branch
   if [[ `git --version 2>/dev/null` =~ 'git version' ]]; then #checking if git is installed
     if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then  #check if it is a repository and if not so, just print the arrow to end the line
       gitString+="\e[49m\e[34m$(arrow)"
@@ -67,9 +67,8 @@ function makeBackUpFile() {
 	echo "made $1 backup file"
 }
 function sshrc() { 
-  rsync -chazPq "$PMP/.sshrc" "$1:/tmp/.sshrc"
-  ssh -t $1 'echo "source /tmp/.sshrc" >> ~/.bashrc; export PMP="/tmp"; exec bash -i'
-  ssh $1 "sed -i '$ d' ~/.bashrc"
+  scp -q "$PMP/.sshrc" "$PMP/.ssh_logout" "$1:/tmp"
+  ssh -t $1 'echo "source /tmp/.sshrc" >> ~/.bashrc; echo "source /tmp/.ssh_logout" >> ~/.bash_logout; export PMP="/tmp"; exec bash -i'
 }
 alias sudo='sudo '
 alias lsa='ls -la'

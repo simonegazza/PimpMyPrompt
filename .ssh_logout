@@ -1,0 +1,4 @@
+rm /tmp/.sshrc
+sed "$ d" ~/.bash_logout
+sed "$ d" ~/.bashrc
+rm /tmp/.ssh_logout
