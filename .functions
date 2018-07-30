@@ -4,10 +4,12 @@ function color_name {
   fi
 }
 function arrow {
-  echo -E $'\u25B6';  #uni-code for arrow
+  #echo -E $'\u25B6';  #uni-code for arrow
+  echo -E '▶';  #uni-code for arrow
 }
 function block {
-  echo -E $'\u25AC';  #uni-code for the block
+  #echo -E $'\u25AC';  #uni-code for the block
+  echo -E '▬';  #uni-code for the block
 }
 function error {
   [[ $? -gt 0 ]] && echo -E '✖'  #check is the last command was a failure
