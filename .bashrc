@@ -1,5 +1,5 @@
 #!/bin/bash
-PMP=`ls -la ~ | grep ".bashrc" | awk -F '->' '{print $2}' | tr -d " \t\n\r" | xargs readlink -f | rev | cut -d "/" -f2- | rev`
+PMP=`ls -la ~ | grep ".bashrc" | awk -F '->' '{print $2}' | tr -d " \t\n\r" | rev | cut -d "/" -f2- | rev`
 
 [[ -d "$PMP/customized" ]] && source "$PMP"/customized/*
 source "$PMP"/.functions
@@ -43,3 +43,4 @@ PS1+='\[\e[49m\]\n'                           #next line
 PS1+='\[\e[34m\]$(block)$(arrow)\[\e[0m\]  '; #second row with an arrow and a block
 
 PS2='\[\e[34m\]\[\e[49m\]$(block)$(arrow)\[\e[0m\]  ';
+

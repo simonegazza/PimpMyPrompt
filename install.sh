@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Folder Reference
-PMP=`readlink -f .bashrc | rev | cut -d "/" -f2- | rev`
+PMP=`pwd | rev | cut -d "/" -f1- | rev`
 
 (
 #Asking for permission
