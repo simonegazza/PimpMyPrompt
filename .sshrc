@@ -4,8 +4,8 @@ export EDITOR=vim
 export PMP="/tmp/.sshrc"
 
 function color_name {
-  if [ "$USER" = "root" ]; then echo -e "\e[31m\u"  #if the user is root than the username color is red
-  else echo -e "\e[33m$USER"  #otherwise print just the user name
+  if [ "$USER" = "root" ]; then echo -e "\e[31m$USER"  #if the user is root than the username color is red
+  else echo -e "\e[34m$USER"  #otherwise print just the user name
   fi
 }
 function arrow {
@@ -98,6 +98,7 @@ alias start='sudo systemctl start '
 alias reload='sudo systemctl reload '
 alias stop='sudo systemctl stop '
 alias install='sudo apt-get install'
+alias sudorc='sudo -E -s'
 alias s='sshrc'
 
 HISTCONTROL=ignorespace
@@ -116,15 +117,15 @@ shopt -s histappend
 # make "less" more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-PS1='\[\e[40m\]'                              #background color black
+PS1='\[\e[47m\]'                              #background color black
 PS1+='\[\e[31m\]'                             #text color red
 PS1+="\$(error)"                              #calling the error function to check if the last command failed
 PS1+='\[\e[33m\]'                             #text color green
 PS1+="\$(bgjobs)"                             #calling the function to check for backgorund jobs
 PS1+=' \[\e[32m\]\D{%d/%m-%T} '               #dates in strftime(3): Day/month - hour:minute:second
 PS1+='$(color_name)'                          #calling the function to check user color based on the user
-PS1+='\[\e[39m@\]'                            #color for @ (white)
-PS1+='\[\e[33m\]\h\[\e[30m\] '                #host
+PS1+='\[\e[30m\]@'                            #color for @ (white)
+PS1+='\[\e[33m\]\h\[\e[37m\] '                #host
 PS1+='\[\e[44m\]$(arrow)\[\e[30m\] '          #ending black arrow	
 PS1+='\w'                                     #relative folder path
 PS1+='\[\e[34m\]\[\e[44m\] '                  #adjusting colours for git plugin

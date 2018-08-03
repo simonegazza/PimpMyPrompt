@@ -1,5 +1,5 @@
 function color_name {
-  if [ "$USER" = "root" ]; then echo -e "\e[31m\u"  #if the user is root than the username color is red
+  if [ "$USER" = "root" ]; then echo -e "\e[31m$USER"  #if the user is root than the username color is red
   else echo -e "\e[33m$USER"  #otherwise print just the user name
   fi
 }
