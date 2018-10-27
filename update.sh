@@ -1,12 +1,13 @@
 #!/bin/bash
-if [[ `git status 2>&1` =~ 'Your branch is behind' ]]; then 
-  if [[ "$1" == "--force" || "$1" == "-f" ]]; then
-    git pull origin master
-  else 
-    read -p "Do you want to check for update? [Y/n] " -n 1;
-    echo -n ""
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-      git pull origin master
-    fi
-  fi
+set -e
+
+read -p "Do you want to check for update? [Y/n] " -n 1;
+if [[ $REPLY =~ ^[Yy]$ ]]; then 
+  git remote -v update && echo "Update Success"
+elif [[ $REPLY =~ ^[Nn]$ ]]; then
+  echo "Update skipped"
+else 
+  echo "Unknown option. Terminating"
 fi
+
+source "$PMP"/.bashrc
