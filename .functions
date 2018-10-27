@@ -19,7 +19,7 @@ function bgjobs {
   [[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"  #check if the current user has background jobs
 }
 function docker_emoji {
-  [[ -f /.dockerenv ]] && echo -E '\e[40m\e[97m🐋 '
+  [[ -f /.dockerenv ]] && echo -E '🐋'
 }
 function gitPlugin () {  #git Plugin
   # Get the repository's branch for this repo, in this version only a single branch is admitted
