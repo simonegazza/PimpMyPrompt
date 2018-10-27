@@ -1,4 +1,5 @@
 alias sudo='sudo '
+alias fucking='sudo'
 alias lsa='ls -la'
 alias c='clear'
 alias cl='clear;pwd;ls -la'
