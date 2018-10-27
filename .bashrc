@@ -1,4 +1,5 @@
 #!/bin/bash
+
 PMP=`ls -la ~ | grep ".bashrc" | awk -F '->' '{print $2}' | tr -d " \t\n\r" | rev | cut -d "/" -f2- | rev`
 
 [[ -d "$PMP/customized" ]] && source "$PMP"/customized/*
