@@ -63,7 +63,7 @@ function gitPlugin () {
       gitString+="\e[49m\e[34m$(arrow)"
 
     # Check if the branch is up to date with no mods, if so print a green banner with the branch symbol and the branch name
-    else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -le "4" ]]; then  
+    else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] || [[ `git status | wc -l` -le "4" ]]; then  
       gitString+="\e[42m\e[34m"
       gitString+="$(arrow) "
       gitString+="\e[30m"
