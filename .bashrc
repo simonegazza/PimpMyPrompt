@@ -10,8 +10,6 @@ if [[ `echo -$` =~ i ]]; then
   bind -f "$PMP"/.inputrc
 fi
 
-#update
-
 HISTCONTROL=ignorespace
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=10000
