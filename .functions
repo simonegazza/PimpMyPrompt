@@ -19,10 +19,22 @@ function bgjobs {
   [[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"  #check if the current user has background jobs
 }
 function docker_emoji {
-  [[ -f /.dockerenv ]] && echo -E '🐋'
+  [[ -f /.dockerenv ]] && echo -E "🐋"
 }
-function gitPlugin () {  #git Plugin
-  # Get the repository's branch for this repo, in this version only a single branch is admitted
+function update () {
+  if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -eq "4" ]]; then 
+    read -p "Do you want to check for update? [Y/n] " -n 1;
+    if [[ $REPLY =~ ^[Yy]$ ]]; then 
+      git remote -v update && echo "Update Success. Restart you terminal"
+    elif [[ $REPLY =~ ^[Nn]$ ]]; then
+      echo "Update skipped"
+    else 
+      echo "Unknown option. Terminating"
+    fi
+  fi
+}
+function gitPlugin () {    
+  # Get the repository's branch for this repo
   gitString=''  #value return string
   branch=`git symbolic-ref --short HEAD 2>/dev/null`  #first current branch
   if [[ `git --version` =~ 'git version' ]]; then #checking if git is installed

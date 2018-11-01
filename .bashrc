@@ -1,8 +1,6 @@
 #!/bin/bash
 
-PMP=$PWD
-
-#PMP=`ls -la ~ | grep ".bashrc" | awk -F '->' '{print $2}' | tr -d " \t\n\r" | rev | cut -d "/" -f2- | rev`
+PMP=`ls -la ~ | grep ".bashrc" | awk -F '->' '{print $2}' | tr -d " \t\n\r" | rev | cut -d "/" -f2- | rev`
 
 [[ -d "$PMP/customized" ]] && source "$PMP"/customized/*
 source "$PMP"/.functions
@@ -12,7 +10,7 @@ if [[ `echo -$` =~ i ]]; then
   bind -f "$PMP"/.inputrc
 fi
 
-"$PMP"/update.sh
+#update
 
 HISTCONTROL=ignorespace
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
