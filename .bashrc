@@ -1,4 +1,5 @@
 #!/bin/bash
+
 PMP=`ls -la ~ | grep ".bashrc" | awk -F '->' '{print $2}' | tr -d " \t\n\r" | rev | cut -d "/" -f2- | rev`
 
 [[ -d "$PMP/customized" ]] && source "$PMP"/customized/*
@@ -9,7 +10,7 @@ if [[ `echo -$` =~ i ]]; then
   bind -f "$PMP"/.inputrc
 fi
 
-"$PMP"/update.sh
+#update
 
 HISTCONTROL=ignorespace
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
@@ -29,6 +30,7 @@ shopt -s histappend
 PS1='\[\e[40m\]'                              #background color black
 PS1+='\[\e[31m\]'                             #text color red
 PS1+="\$(error)"                              #calling the error function to check if the last command failed
+PS1+="\$(docker_emoji)"
 PS1+='\[\e[33m\]'                             #text color green
 PS1+="\$(bgjobs)"                             #calling the function to check for backgorund jobs
 PS1+=' \[\e[32m\]\D{%d/%m-%T} '               #dates in strftime(3): Day/month - hour:minute:second

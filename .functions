@@ -1,5 +1,6 @@
 function color_name {
-  if [ "$USER" = "root" ]; then echo -e "\e[31m$USER"  #if the user is root than the username color is red
+  if [ -z $USER ]; then echo -e "\e[95munknown" #if the variable is not present the color is magenta
+  elif [ "$USER" = "root" ]; then echo -e "\e[31m$USER"  #if the user is root than the username color is red
   else echo -e "\e[33m$USER"  #otherwise print just the user name
   fi
 }
@@ -22,9 +23,27 @@ function bgjobs {
   [[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"  
 }
 
+function docker_emoji {
+  # Check if executed in a docker container and print the whale
+  [[ -f /.dockerenv ]] && echo -E "🐋"
+}
+
+function update () {
+  if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -eq "4" ]]; then 
+    read -p "Do you want to check for update? [Y/n] " -n 1;
+    if [[ $REPLY =~ ^[Yy]$ ]]; then 
+      git remote -v update && echo "Update Success. Restart you terminal"
+    elif [[ $REPLY =~ ^[Nn]$ ]]; then
+      echo "Update skipped"
+    else 
+      echo "Unknown option. Terminating"
+    fi
+  fi
+}
+
 # Git Plugin
 function gitPlugin () {    
-  # Get the repository's branch for this repo  
+  # Get the repository's branch for this repo
   gitString=''  #value return string
 
   # Get the current branch
@@ -97,6 +116,7 @@ function makeBackUpFile() {
 }
 
 function sshrc() {
+  cat $PMP/.env $PMP/.functions $PMP/.aliases $PMP/.baschrc > $PMP/.sshrc
   scp -q "$PMP/.sshrc" "$PMP/.ssh_logout" "$1:/tmp"
   ssh -t $1 'echo "source /tmp/.sshrc" >> ~/.bashrc; echo "source /tmp/.ssh_logout" >> ~/.bash_logout; export PMP="/tmp"; exec bash -i'
 }

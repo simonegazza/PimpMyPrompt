@@ -25,6 +25,7 @@ if [[ -f ~/.bashrc || -f ~/.bash_profile || -f .vimrc || -f .inputrc ]]; then
     mv ~/.bash_profile ~/.bash_profile.bak && echo ".bash_profile backupped!" 
     mv ~/.vimrc ~/.vimrc.bak && echo ".vimrc backupped!"
     mv ~/.inputrc ~/.inputrc.bak && echo ".inputrc backupped!"
+    mv ~/.profile ~/.profile.bak && echo ".profile backupped!"
   else
     echo "Installation stopped"
     return 1
@@ -34,7 +35,8 @@ fi
 #making links so that bashrc can be updated 
 ln -s "$PMP/.bashrc" ~/.bashrc && echo ".bashrc installed!"
 ln -s "$PMP/.bash_profile" ~/.bash_profile && echo ".bash_profile installed!"
-ln -s "$PMP/.inputrc" ~/.bashrc && echo ".inputrc installed!"
+ln -s "$PMP/.inputrc" ~/.inputrc && echo ".inputrc installed!"
+ln -s "$PMP/.profile" ~/.profile && echo ".profile installed!"
 
 #vim installation part
 ln -s "$PMP/.vimrc" .vimrc
