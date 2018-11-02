@@ -34,7 +34,7 @@ function docker_emoji {
 }
 
 
-function update () {
+function update {
   if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -eq "4" ]]; then 
     read -p "Do you want to check for update? [Y/n] " -n 1;
     if [[ $REPLY =~ ^[Yy]$ ]]; then 
@@ -123,6 +123,38 @@ function gitPushAll() {
 function makeBackUpFile() {
   cp $1 $1.bak
   echo "made $1 backup file"
+}
+
+
+function cd_customized(){
+  # cd is called with builtin prefix
+  builtin cd "$@" 
+
+  # Store current path (without spaces) and current path escaped
+  current_path=$(pwd | sed -e 's/ /§/g')
+  current_path_escaped=$(pwd | sed -e 's/\//\\\//g')
+
+  # Check if the path already exist in the .cd file
+  if [[ `grep -wE $current_path $PMP/.cd`  ]]; then
+    # Upgrade the number of occurrencies of that line by one
+    line_found=$(cat $PMP/.cd | grep -wE "$current_path" | awk -F '|' '{$1=$1+1; print $1" |"$2}')
+
+    # Delete the old line 
+    sed "/[0-9]+ \| $current_path_escaped/d" -i $PMP/.cd
+
+    # Print the updated one
+    echo "$line_found" >> $PMP/.cd
+
+  else 
+    # Path not found, so insert it in the .cd file
+    echo "1 | $current_path" >> $PMP/.cd
+  fi
+}
+
+
+function j(){
+  # Sort stable, by number, in ascending order, by the first coloumn, then search the folder and move there
+  cd "$(sort -sgrt '|' -k 1 $PMP/.cd | grep -w "$1$" | awk -F '|' '{ print $2; exit; }' | sed -e 's/§/\\\ /g' | xargs)"
 }
 
 

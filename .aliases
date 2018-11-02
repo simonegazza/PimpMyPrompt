@@ -12,6 +12,8 @@ if [ -x /usr/bin/dircolors ]; then #ls with more color
   alias fgrep='fgrep --color=auto'
   alias egrep='egrep --color=auto'
 fi
+alias j=j
+alias cd=cd_customized
 alias ..='cd ../' 
 alias ...='cd ../../'
 alias ....='cd ../../../'
