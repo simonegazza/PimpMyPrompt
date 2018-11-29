@@ -1,0 +1,12 @@
+function update {
+  if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -eq "4" ]]; then 
+    read -p "Do you want to check for update? [Y/n] " -n 1;
+    if [[ $REPLY =~ ^[Yy]$ ]]; then 
+      git remote -v update && echo "Update Success. Restart you terminal"
+    elif [[ $REPLY =~ ^[Nn]$ ]]; then
+      echo "Update skipped"
+    else 
+      echo "Unknown option. Terminating"
+    fi
+  fi
+}

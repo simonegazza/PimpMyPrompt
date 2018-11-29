@@ -1,9 +1,10 @@
 #!/bin/bash
-
 PMP=`ls -la ~ | grep ".bashrc" | awk -F '->' '{print $2}' | tr -d " \t\n\r" | rev | cut -d "/" -f2- | rev`
 
 [[ -d "$PMP/add-ons" ]] && source "$PMP"/.add-ons/*
-source "$PMP"/.functions
+for file in $(ls "$PMP"/.functions); do
+    source "$PMP"/.functions/"$file"
+done
 source "$PMP"/.aliases
 source "$PMP"/.env
 if [[ `echo -$` =~ i ]]; then
@@ -28,7 +29,7 @@ shopt -s histappend
 PS1='\[\e[40m\]'                              #background color black
 PS1+='\[\e[31m\]'                             #text color red
 PS1+="\$(error)"                              #calling the error function to check if the last command failed
-PS1+="\$(docker_emoji)"
+PS1+="\$(docker_emoji)"                       #emoji if in docker
 PS1+='\[\e[33m\]'                             #text color green
 PS1+="\$(bgjobs)"                             #calling the function to check for backgorund jobs
 PS1+=' \[\e[32m\]\D{%d/%m-%T} '               #dates in strftime(3): Day/month - hour:minute:second

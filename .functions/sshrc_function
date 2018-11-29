@@ -1,0 +1,4 @@
+function sshrc() {
+  scp -q "$PMP/.sshrc" "$PMP/.ssh_logout" "$1:/tmp"
+  ssh -t $1 'echo "source /tmp/.sshrc" >> ~/.bashrc; echo "source /tmp/.ssh_logout" >> ~/.bash_logout; export PMP="/tmp"; exec bash -i'
+}
