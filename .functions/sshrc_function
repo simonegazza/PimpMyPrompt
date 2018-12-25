@@ -1,4 +1,19 @@
 function sshrc() {
+  #Cleaning the file
+  echo "#!/bin/bash" > $PMP/.sshrc
+
+  #First create the sshrc file
+  sed $PMP/.env -e "/black/d" -e "/white/d" | cat >> $PMP/.sshrc && echo "
+export background_white='\[\e[40m\]'
+export text_white='\[\e[30m\]'
+export background_black='\[\e[107m\]'
+export text_black='\[\e[39m\]'
+  " >> $PMP/.sshrc
+  cat $PMP/.functions/* $PMP/.add-ons/* $PMP/.autocompletion/* $PMP/.inputrc $PMP/.aliases $PMP/.bashrc >> $PMP/.sshrc 
+
+  #Using the sshrc file in ssh
   scp -q "$PMP/.sshrc" "$PMP/.ssh_logout" "$1:/tmp"
   ssh -t $1 'echo "source /tmp/.sshrc" >> ~/.bashrc; echo "source /tmp/.ssh_logout" >> ~/.bash_logout; export PMP="/tmp"; exec bash -i'
 }
+
+

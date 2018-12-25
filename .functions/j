@@ -29,6 +29,11 @@ function j(){
     echo "j: error: illegal number of arguments" 
     return 1
   fi;
+  local selected_folder=$(sort -sgrt '|' -k 1 $PMP/.cd | grep -w "$1$" | awk -F '|' '{ print $2; exit; }' | sed -e 's/§/\\\ /g' | xargs)
+  if [[ "$selected_folder" == "" ]]; then 
+    echo "j: error: no path found"
+    return 2
+  fi
   # Sort stable, by number, in ascending order, by the first coloumn, then search the folder and move there
-  cd "$(sort -sgrt '|' -k 1 $PMP/.cd | grep -w "$1$" | awk -F '|' '{ print $2; exit; }' | sed -e 's/§/\\\ /g' | xargs)"
+  cd "$selected_folder"
 }

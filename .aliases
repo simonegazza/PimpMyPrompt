@@ -20,6 +20,7 @@ alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 alias ggg=gitPushAll
+alias tree=call_tree
 alias cleardns="sudo /etc/init.d/dns-clean restart && echo DNS cache cleared"
 alias mbf=makeBackUpFile
 alias filehost='vim /etc/hosts'

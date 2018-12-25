@@ -37,9 +37,8 @@ ln -s "$PMP/.bashrc" ~/.bashrc && echo ".bashrc installed!"
 ln -s "$PMP/.bash_profile" ~/.bash_profile && echo ".bash_profile installed!"
 ln -s "$PMP/.inputrc" ~/.inputrc && echo ".inputrc installed!"
 ln -s "$PMP/.profile" ~/.profile && echo ".profile installed!"
+ln -s "$PMP/.autocompletion/*" /etc/bash_completion.d/* && echo "autocompletion installed!"
 
 #vim installation part
 ln -s "$PMP/.vimrc" .vimrc
-mkdir -p ~/.vim/colors 2>&1
-ln -s "$PMP/vim-theme/*" ~/.vim/colors 
 ) 2>/dev/null
