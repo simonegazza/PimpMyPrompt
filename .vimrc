@@ -1,5 +1,6 @@
 "Setting varibales
-let mapleader = " " 
+let mapleader = " "
+let PMP=$PMP
 
 "General
 syntax enable
@@ -22,7 +23,7 @@ set incsearch       "search as you type in
 set hlsearch        "highlight all the matches
 set clipboard=unnamedplus
 
-"Autocompletion 
+"Autocompletion
 set wildmenu
 set wildmode=list:longest,full
 set mouse=a
@@ -36,8 +37,15 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-"Deletes Whitespaces
-autocmd BufWritePre * %s/\s+$//e
+"Autocommands
+autocmd BufNewFile *.sh 0r $PMP/vim/skeleton.sh
+autocmd BufNewFile *.bash 0r $PMP/vim/skeleton.sh
+autocmd BufNewFile *.cpp 0r $PMP/vim/skeleton.cpp
+autocmd BufNewFile *.cc 0r $PMP/vim/skeleton.cpp
+autocmd BufNewFile *.hh 0r $PMP/vim/skeleton.hh
+autocmd BufNewFile *.tex 0r $PMP/vim/skeleton.tex
+autocmd BufWritePre * %s/\s\+$//e "deletes all whitespaces at the end of the line
+autocmd BufWritePost *.tex :!pdflatex % && evince %:r.pdf &
 
 "Colorscheme
 colorscheme peachpuff

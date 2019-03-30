@@ -5,30 +5,61 @@ function color_name {
   fi
 }
 
-
 function arrow {
-  echo -E '▶';  
+  echo -E '▶';
 }
-
 
 function block {
-  echo -E '▬';  
+  echo -E '▬';
 }
 
-
-function error { 
+function error {
   # Check if the last command was a failure and then print a X
-  [[ $? -gt 0 ]] && echo -E '✖'  
+  [[ $? -gt 0 ]] && echo -E '✖'
 }
-
 
 function bgjobs {
   # Check if the current user has background jobs and then print a gear
-  [[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"  
+  [[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"
 }
-
 
 function docker_emoji {
   # Check if executed in a docker container and print the whale
   [[ -f /.dockerenv ]] && echo -E "🐋"
+}
+
+function gitPushAll() {
+  if [ "$#" -eq "0" ]; then
+    local message="Mods applied to the Repo"
+  else
+    local message="$1"
+  fi
+
+  git add --all
+  git commit -m "$message"
+  git push
+}
+
+function makeBackUpFile() {
+  cp $1 $1.bakup
+  echo "made $1 backup file"
+}
+
+function cc(){
+  # Taking last command and substituting that using bash history expansion
+  local history_entry=$(history | tail -n 2 | head -n 1 | awk '{ print $1 }')
+  local old_command=$(!$history_entry | awk '{print $2}')
+  local old_parameter=$(!$history_entry | awk '{print $3}')
+  local new_command
+  case $old_command in
+    vim)
+        new_command="cat $old_parameter"
+        ;;
+    cat)
+        new_command="vim $old_parameter"
+        ;;
+    *) echo "bash: cc: unknown how to substitute preceeding command"
+        ;;
+  esac
+  $new_command
 }

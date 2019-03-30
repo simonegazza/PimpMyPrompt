@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Set the PMP environment variable and source some files
-PMP=`ls -la ~ | grep ".bashrc" | awk -F '->' '{print $2}' | tr -d " \t\n\r" | rev | cut -d "/" -f2- | rev`
+export PMP=`ls -la ~ | grep ".bashrc" | awk -F '->' '{print $2}' | tr -d " \t\n\r" | rev | cut -d "/" -f2- | rev`
 source "$PMP"/.env
 if [[ -d "$PMP/.add-ons" ]]; then
     for file in $(ls "$PMP"/.add-ons); do

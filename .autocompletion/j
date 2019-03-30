@@ -7,8 +7,10 @@ function completion_j () {
     if [ "${#possibilities[@]}" -eq 1 ]; then
         COMPREPLY=$(compgen -W "${possibilities}" -- "${cur}")
     else
-        echo 
+        echo
         printf "\n${possibilities[*]}"
     fi
+#    COMPREPLY=( $(compgen -W "$($1 -pnro name)" -- "${cur}") )
+    return 0
 }
 complete -F completion_j j
