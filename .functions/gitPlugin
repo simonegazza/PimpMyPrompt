@@ -1,18 +1,20 @@
-function gitPlugin () {    
+# vim: set syntax=sh:
+
+function gitPlugin () {
   # Get the repository's branch for this repo
   gitString=''  #value return string
 
   # Get the current branch
-  branch=`git symbolic-ref --short HEAD 2>/dev/null`  
+  branch=`git symbolic-ref --short HEAD 2>/dev/null`
 
   # Check if git is installed
-  if [[ `git --version` ]]; then 
+  if [[ `git --version` ]]; then
     # Check if it is a repository and if not so, just print the arrow to end the line
-    if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then  
+    if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then
       gitString+="\e[49m\e[34m$(arrow)"
 
     # Check if the branch is up to date with no mods, if so print a green banner with the branch symbol and the branch name
-    else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -le "4" ]]; then  
+    else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -le "4" ]]; then
       gitString+="\e[42m\e[34m"
       gitString+="$(arrow) "
       gitString+="\e[30m"
@@ -26,13 +28,13 @@ function gitPlugin () {
       gitString+="  $branch "
 
       # Print a plus meaning you have to do a `git add .`
-      if [[ `git status 2>&1` =~ 'Changes not staged for commit' ]]; then   
+      if [[ `git status 2>&1` =~ 'Changes not staged for commit' ]]; then
         gitString+=$'\u271A'
         gitString+=" "
       fi
 
       # A big dot meaning you have to 'git commit'
-      if [[ `git status 2>&1` =~ 'Changes to be committed' ]]; then 
+      if [[ `git status 2>&1` =~ 'Changes to be committed' ]]; then
         gitString+=$'\u25CF'
         gitString+=" "
       fi
@@ -50,8 +52,8 @@ function gitPlugin () {
   echo -ne "$gitString"
 
   # If git isn't installed just always print the arrow
-  else 
-    echo -ne "\e[49m\e[34m$(arrow)" 
+  else
+    echo -ne "\e[49m\e[34m$(arrow)"
   fi
 }
 

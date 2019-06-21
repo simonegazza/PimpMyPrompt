@@ -1,8 +1,11 @@
-alias sudo='sudo '
+# vim: set syntax=sh:
+
+alias sudo='sudo'
 alias fucking='sudo'
 alias lsa='ls -la'
+alias lsh='ls -lah'
 alias c='clear'
-alias cl='clear;pwd;ls -la'
+alias cl='clear && pwd && ls -la'
 if [ -x /usr/bin/dircolors ]; then #ls with more color
 	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
   alias ls='ls --color=auto'
@@ -12,23 +15,20 @@ if [ -x /usr/bin/dircolors ]; then #ls with more color
   alias fgrep='fgrep --color=auto'
   alias egrep='egrep --color=auto'
 fi
-alias j=j
-alias cd=cd_customized
-alias ..='cd ../' 
+alias ..='cd ../'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 alias ggg=gitPushAll
+alias gits="git status"
 alias tree=call_tree
+alias search=call_search
 alias cleardns="sudo /etc/init.d/dns-clean restart && echo DNS cache cleared"
 alias mbf=makeBackUpFile
-alias filehost='vim /etc/hosts'
-alias asites='cd /etc/apache2/sites-enabled'
-alias nsites='cd /etc/nginx/sites-enabled'
-alias restart='sudo systemctl restart '
 alias start='sudo systemctl start '
 alias reload='sudo systemctl reload '
+alias restart='sudo systemctl restart '
 alias stop='sudo systemctl stop '
 alias install='sudo apt-get install'
 alias sudorc='sudo -E -s'

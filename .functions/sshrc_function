@@ -1,19 +1,27 @@
+# vim: set syntax=sh:
+
+# The .sshrc file is made of:
+#   .functions/*
+#   .inputrc
+#   .aliases
+#   .bashrc
+
 function sshrc() {
-  #Cleaning the file
-  echo "#!/bin/bash" > $PMP/.sshrc
 
-  #First create the sshrc file
-  sed $PMP/.env -e "/black/d" -e "/white/d" | cat >> $PMP/.sshrc && echo "
-export background_white='\[\e[40m\]'
-export text_white='\[\e[30m\]'
-export background_black='\[\e[107m\]'
-export text_black='\[\e[39m\]'
-  " >> $PMP/.sshrc
-  cat $PMP/.functions/* $PMP/.add-ons/* $PMP/.autocompletion/* $PMP/.inputrc $PMP/.aliases $PMP/.bashrc >> $PMP/.sshrc 
+# should I create a tar.gz acrive whith add-ons?
+# Back-up of old .bashrc
+# put in new bashrc the content of sshrc
+# entering in a normal shell
+# at the logout i take the old backups and restore them
+# exiting from shell
 
-  #Using the sshrc file in ssh
-  scp -q "$PMP/.sshrc" "$PMP/.ssh_logout" "$1:/tmp"
-  ssh -t $1 'echo "source /tmp/.sshrc" >> ~/.bashrc; echo "source /tmp/.ssh_logout" >> ~/.bash_logout; export PMP="/tmp"; exec bash -i'
+    tar -cf - "$PMP/.sshrc" "$PMP/.ssh_logout" "$PMP/pmp.d" | gzip -9 -f > PMP.tar.gz
+    scp "$PMP/.PMP.tar.gz" "/tmp"
+    ssh $1 "tar -xf /tmp/PMP.tar.gz \
+        && mv ~/.bashrc ~/.bashrc.back-up \
+        && mv ~/.bash_profile ~/.bash_profile.back-up \
+        && if test -f ~/.bash_logout; then touch .bash_logout; else mv ~/.bash_logout ~/.bash_logout.back-up
+        && ln -s /tmp/PMP/.sshrc ~/.bashrc \
+        && ln -s /tmp/PMP/.ssh_profile ~/.bash_profile
+        && ln -s /tmp/PMP/.ssh_logout ~/.bash_logout"
 }
-
-

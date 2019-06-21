@@ -3,9 +3,9 @@
 #Set the PMP environment variable and source some files
 export PMP=`ls -la ~ | grep ".bashrc" | awk -F '->' '{print $2}' | tr -d " \t\n\r" | rev | cut -d "/" -f2- | rev`
 source "$PMP"/.env
-if [[ -d "$PMP/.add-ons" ]]; then
-    for file in $(ls "$PMP"/.add-ons); do
-        source "$PMP"/.add-ons/$file
+if [[ -d "$PMP/pmp.d" ]]; then
+    for file in $(ls "$PMP"/pmp.d); do
+        source "$PMP"/pmp.d/$file
     done
 fi
 for file in $(ls "$PMP"/.functions); do
@@ -15,8 +15,6 @@ source "$PMP"/.aliases
 if [[ `echo -$` =~ i ]]; then
   bind -f "$PMP"/.inputrc
 fi
-source /etc/bash_completion
-source $PMP/.autocompletion/*
 
 HISTCONTROL=ignorespace
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
@@ -41,11 +39,10 @@ PS1+=" $text_green\D{%d/%m-%T} "                    #dates in strftime(3): Day/m
 PS1+='$(color_name)'                                #calling the function to check user color based on the user
 PS1+="$text_white@"                                 #color for @ (white)
 PS1+="$text_yellow\h$text_black "                   #host
-PS1+="$background_blue$(arrow)$text_black "         #ending black arrow	
+PS1+="$background_blue$(arrow)$text_black "         #ending black arrow
 PS1+='\w'                                           #relative folder path
 PS1+="$text_blue$background_blue \$(gitPlugin)"     #adjusting colours and calling git plugin
 PS1+="$background_default\n"                        #next line
 PS1+="$text_blue$(block)$(arrow)$remove_text_background  ";       #second row with an arrow and a block
 
 PS2="$text_blue$background_default$(block)$(arrow)$remove_text_background  ";
-

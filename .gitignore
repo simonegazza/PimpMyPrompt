@@ -1,4 +1,6 @@
 .git
 *.swp
-.add-ons/*
+pmp.d/*
+PMP*
+!pmp.d/.gitkeep
 .cd

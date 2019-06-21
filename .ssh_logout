@@ -1,5 +1,9 @@
 #!/bin/bash
-rm /tmp/.sshrc
-sed -ie "s/source \/tmp\/\.ssh_logout//d" ~/.bash_logout
-sed -ie "s/source \/tmp\/\.sshrc//d" ~/.bashrc
+rm /tmp/PMP /tmp/PMP.tar.gz
+rm -f ~/.bashrc ~/.bash_profile ~/.bash_logout
+
+mv ~/.bashrc.back-up ~/.bashrc
+mv ~/.bash_profile.back-up ~/.bash_profile
+mv ~/.bash_logout.back-up ~/.bash_logout
+
 rm /tmp/.ssh_logout

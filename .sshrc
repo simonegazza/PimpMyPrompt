@@ -1,6 +1,6 @@
 #!/bin/bash
 export SHELL=/bin/bash
-export PATH="$PATH:/usr/local/bin:$PMP/.add-ons"
+export PATH="$PATH:/usr/local/bin"
 export EDITOR=vim
 export LANG="en_US.UTF-8"
 
@@ -12,28 +12,26 @@ export text_green='\[\e[32m\]'
 export text_yellow='\[\e[33m\]'
 export text_blue='\[\e[34m\]'
 export remove_text_background='\[\e[0m\]'
+export background_white='\[\e[40m\]'
+export text_white='\[\e[30m\]'
+export background_black='\[\e[107m\]'
+export text_black='\[\e[39m\]'
 
-
-  export background_white='\[\e[40m\]'
-  export text_white='\[\e[30m\]'
-  export background_black='\[\e[107m\]'
-  export text_black='\[\e[39m\]'
-  
-function gitPlugin () {    
+function gitPlugin () {
   # Get the repository's branch for this repo
   gitString=''  #value return string
 
   # Get the current branch
-  branch=`git symbolic-ref --short HEAD 2>/dev/null`  
+  branch=`git symbolic-ref --short HEAD 2>/dev/null`
 
   # Check if git is installed
-  if [[ `git --version` ]]; then 
+  if [[ `git --version` ]]; then
     # Check if it is a repository and if not so, just print the arrow to end the line
-    if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then  
+    if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then
       gitString+="\e[49m\e[34m$(arrow)"
 
     # Check if the branch is up to date with no mods, if so print a green banner with the branch symbol and the branch name
-    else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -le "4" ]]; then  
+    else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -le "4" ]]; then
       gitString+="\e[42m\e[34m"
       gitString+="$(arrow) "
       gitString+="\e[30m"
@@ -47,13 +45,13 @@ function gitPlugin () {
       gitString+="  $branch "
 
       # Print a plus meaning you have to do a `git add .`
-      if [[ `git status 2>&1` =~ 'Changes not staged for commit' ]]; then   
+      if [[ `git status 2>&1` =~ 'Changes not staged for commit' ]]; then
         gitString+=$'\u271A'
         gitString+=" "
       fi
 
       # A big dot meaning you have to 'git commit'
-      if [[ `git status 2>&1` =~ 'Changes to be committed' ]]; then 
+      if [[ `git status 2>&1` =~ 'Changes to be committed' ]]; then
         gitString+=$'\u25CF'
         gitString+=" "
       fi
@@ -71,11 +69,10 @@ function gitPlugin () {
   echo -ne "$gitString"
 
   # If git isn't installed just always print the arrow
-  else 
-    echo -ne "\e[49m\e[34m$(arrow)" 
+  else
+    echo -ne "\e[49m\e[34m$(arrow)"
   fi
 }
-
 
 function gitPushAll() {
   if [ "$#" -eq "0" ]; then
@@ -89,45 +86,44 @@ function gitPushAll() {
   git push
 }
 
-function cd_customized(){
-  # cd is called with builtin prefix
-  builtin cd "$@" 
+function j () {
+    while getopts ":lha:" o; do
+        case ${o} in
+        a)
+            echo $(cd ${OPTARG} && pwd) >> $PMP/.cd
+            return
+        ;;
+        h)
+            echo "PimpMyPrompt jump, version 1.0
+Usage: j [-a] folder
+       j [-h|-l]
+Arguments:
+    -a      set the folder listed to be searched
+    -l      show the list of folders
+    -h      show this message"
+            return
+        ;;
+        l)
+            cat $PMP/.cd
+            return
+        ;;
+        *)
+        ;;
+        esac
+    done
 
-  # Store current path (without spaces) and current path escaped
-  current_path=$(pwd | sed -e 's/ /§/g')
-  current_path_escaped=$(pwd | sed -e 's/\//\\\//g')
-
-  # Check if the path already exist in the .cd file
-  if [[ `grep -wE $current_path $PMP/.cd`  ]]; then
-    # Upgrade the number of occurrencies of that line by one
-    line_found=$(cat $PMP/.cd | grep -wE "$current_path" | awk -F '|' '{$1=$1+1; print $1" |"$2}')
-
-    # Delete the old line 
-    sed "/[0-9]+ \| $current_path_escaped/d" -i $PMP/.cd
-
-    # Print the updated one
-    echo "$line_found" >> $PMP/.cd
-
-  else 
-    # Path not found, so insert it in the .cd file
-    echo "1 | $current_path" >> $PMP/.cd
-  fi
+    local query_folder=$(cd $1 && pwd)
+    for folder in $(cat $PMP/.cd); do
+        for subfolder in $(find $folder -type d); do
+            if [[ "$subfolder" == "$query_folder" ]]; then
+                cd $subfolder
+                return
+            fi
+        done
+    done
+    echo "j: No match found"
 }
 
-
-function j(){
-  if [ "$#" -ne 1 ]; then 
-    echo "j: error: illegal number of arguments" 
-    return 1
-  fi;
-  local selected_folder=$(sort -sgrt '|' -k 1 $PMP/.cd | grep -w "$1$" | awk -F '|' '{ print $2; exit; }' | sed -e 's/§/\\\ /g' | xargs)
-  if [[ "$selected_folder" == "" ]]; then 
-    echo "j: error: no path found"
-    return 2
-  fi
-  # Sort stable, by number, in ascending order, by the first coloumn, then search the folder and move there
-  cd "$selected_folder"
-}
 function color_name {
   if [ -z $USER ]; then echo -e "\e[95munknown" #if the variable is not present the color is magenta
   elif [ "$USER" = "root" ]; then echo -e "\e[31m$USER"  #if the user is root than the username color is red
@@ -135,53 +131,46 @@ function color_name {
   fi
 }
 
-
 function arrow {
-  echo -E '▶';  
+  echo -E '▶';
 }
-
 
 function block {
-  echo -E '▬';  
+  echo -E '▬';
 }
 
-
-function error { 
+function error {
   # Check if the last command was a failure and then print a X
-  [[ $? -gt 0 ]] && echo -E '✖'  
+  [[ $? -gt 0 ]] && echo -E '✖'
 }
-
 
 function bgjobs {
   # Check if the current user has background jobs and then print a gear
-  [[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"  
+  [[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"
 }
-
 
 function docker_emoji {
   # Check if executed in a docker container and print the whale
   [[ -f /.dockerenv ]] && echo -E "🐋"
 }
-function sshrc() {
-  #Cleaning the file
-  echo "#!/bin/bash" > $PMP/.sshrc
 
-  #First create the sshrc file
-  sed $PMP/.env -e "/black/d" -e "/white/d" | cat >> $PMP/.sshrc && echo "
-  export background_white='\[\e[40m\]'
-  export text_white='\[\e[30m\]'
-  export background_black='\[\e[107m\]'
-  export text_black='\[\e[39m\]'
-  " >> $PMP/.sshrc
-  cat $PMP/.functions/* $PMP/.add-ons/* $PMP/.autocompletion/* $PMP/.aliases  $PMP/.bashrc $PMP/.inputrc >> $PMP/.sshrc 
+function gitPushAll() {
+  if [ "$#" -eq "0" ]; then
+    local message="Mods applied to the Repo"
+  else
+    local message="$1"
+  fi
 
-  #Using the sshrc file in ssh
-  scp -q "$PMP/.sshrc" "$PMP/.ssh_logout" "$1:/tmp"
-  ssh -t $1 'echo "source /tmp/.sshrc" >> ~/.bashrc; echo "source /tmp/.ssh_logout" >> ~/.bash_logout; export PMP="/tmp"; exec bash -i'
+  git add --all
+  git commit -m "$message"
+  git push
 }
 
+function makeBackUpFile() {
+  cp $1 $1.bakup
+  echo "made $1 backup file"
+}
 
-#!/bin/bash
 
 function tree (){
     spaces=$((spaces+1))
@@ -201,38 +190,15 @@ function call_tree (){
     tree $1
 }
 
-function update {
-  if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -eq "4" ]]; then 
-    read -p "Do you want to check for update? [Y/n] " -n 1;
-    if [[ $REPLY =~ ^[Yy]$ ]]; then 
-      git remote -v update && echo "Update Success. Restart you terminal"
-    elif [[ $REPLY =~ ^[Nn]$ ]]; then
-      echo "Update skipped"
-    else 
-      echo "Unknown option. Terminating"
-    fi
-  fi
-}
-alias docker='sudo docker '
-#!/bin/bash
-ssh-add ~/.ssh/sf-sys-admin > /dev/null 2>&1
-#!/bin/bash
-function completion_j () {
-    COMPREPLY=()
-    local cur
-    cur="${COMP_WORDS[COMP_CWORD]}"
-    possibilities=( $(sort -sgrt '|' $PMP/.cd | awk -F '|' '{ print $2 }' | sed -e 's/\ //g' -e 's/§/\\\ /g' -e '/^$/d' | awk -F '/' '{ print $NF }' | grep "$cur") )
-    if [ "${#possibilities[@]}" -eq 1 ]; then
-        COMPREPLY=$(compgen -W "${possibilities}" -- "${cur}")
-    else
-        echo 
-        printf "\n${possibilities[*]}"
-    fi
-}
-complete -F completion_j j
+set completion-ignore-case On
+set colored-stats On
+set show-all-if-ambiguous On
+set show-all-if-unmodified On
+set echo-control-characters off
 alias sudo='sudo '
 alias fucking='sudo'
 alias lsa='ls -la'
+alias lsh='ls -lah'
 alias c='clear'
 alias cl='clear;pwd;ls -la'
 if [ -x /usr/bin/dircolors ]; then #ls with more color
@@ -244,41 +210,23 @@ if [ -x /usr/bin/dircolors ]; then #ls with more color
   alias fgrep='fgrep --color=auto'
   alias egrep='egrep --color=auto'
 fi
-alias j=j
-alias cd=cd_customized
-alias ..='cd ../' 
+alias ..='cd ../'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
 alias ggg=gitPushAll
+alias gits="git status"
 alias tree=call_tree
 alias cleardns="sudo /etc/init.d/dns-clean restart && echo DNS cache cleared"
 alias mbf=makeBackUpFile
 alias filehost='vim /etc/hosts'
-alias asites='cd /etc/apache2/sites-enabled'
-alias nsites='cd /etc/nginx/sites-enabled'
 alias restart='sudo systemctl restart '
 alias start='sudo systemctl start '
 alias reload='sudo systemctl reload '
 alias stop='sudo systemctl stop '
 alias install='sudo apt-get install'
 alias sudorc='sudo -E -s'
-alias s='sshrc'
-#!/bin/bash
-
-PMP=`ls -la ~ | grep ".bashrc" | awk -F '->' '{print $2}' | tr -d " \t\n\r" | rev | cut -d "/" -f2- | rev`
-source "$PMP"/.env
-[[ -d "$PMP/add-ons" ]] && source "$PMP"/.add-ons/*
-for file in $(ls "$PMP"/.functions); do
-    source "$PMP"/.functions/"$file"
-done
-source "$PMP"/.aliases
-if [[ `echo -$` =~ i ]]; then
-  bind -f "$PMP"/.inputrc
-fi
-source /etc/bash_completion
-source $PMP/.autocompletion/*
 
 HISTCONTROL=ignorespace
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
@@ -303,16 +251,10 @@ PS1+=" $text_green\D{%d/%m-%T} "                    #dates in strftime(3): Day/m
 PS1+='$(color_name)'                                #calling the function to check user color based on the user
 PS1+="$text_white@"                                 #color for @ (white)
 PS1+="$text_yellow\h$text_black "                   #host
-PS1+="$background_blue$(arrow)$text_black "         #ending black arrow	
+PS1+="$background_blue$(arrow)$text_black "         #ending black arrow
 PS1+='\w'                                           #relative folder path
 PS1+="$text_blue$background_blue \$(gitPlugin)"     #adjusting colours and calling git plugin
 PS1+="$background_default\n"                        #next line
 PS1+="$text_blue$(block)$(arrow)$remove_text_background  ";       #second row with an arrow and a block
 
 PS2="$text_blue$background_default$(block)$(arrow)$remove_text_background  ";
-
-set completion-ignore-case On
-set colored-stats On
-set show-all-if-ambiguous On
-set show-all-if-unmodified On
-set echo-control-characters off
