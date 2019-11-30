@@ -36,6 +36,7 @@ if [[ $1=="" ]]; then
 
     # Vim installation part
     ln -sv "$PMP/.vimrc" .vimrc
+    mkdir -p ~/.vim/undodir
     ) 2>/dev/null
 elif [[ $1=="-u" ]]; then
     echo "Uninstallation Instructions:"

@@ -25,6 +25,8 @@ set hlsearch
 set clipboard=unnamedplus
 set ffs=unix,dos,mac
 set termguicolors
+set undofile
+set undodir=~/.vim/undodir
 
 "Autocompletion
 set wildmenu
