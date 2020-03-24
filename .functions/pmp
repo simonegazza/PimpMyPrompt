@@ -1,45 +1,20 @@
 # vim: set syntax=sh:
 
-function color_name {
+function user_color {
   if [ -z $USER ]; then echo -e "\e[95munknown" #if the variable is not present the color is magenta
   elif [ "$USER" = "root" ]; then echo -e "\e[31m$USER"  #if the user is root than the username color is red
   else echo -e "\e[33m$USER"  #otherwise print just the user name
   fi
 }
 
-function arrow {
-  echo -E '▶';
-}
-
-function block {
-  echo -E '▬';
-}
-
 function error {
   # Check if the last command was a failure and then print a X
-  [[ $? -gt 0 ]] && echo -E '✖'
+  [[ $? -gt 0 ]] && echo -E '✖ '
 }
 
 function bgjobs {
   # Check if the current user has background jobs and then print a gear
-  [[ `jobs -l | wc -l` -gt 0 ]] && echo -E " ⚙"
-}
-
-function docker_emoji {
-  # Check if executed in a docker container and print the whale
-  [[ -f /.dockerenv ]] && echo -E "🐋"
-}
-
-function gitPushAll() {
-  if [ "$#" -eq "0" ]; then
-    local message="Mods applied to the Repo"
-  else
-    local message="$1"
-  fi
-
-  git add --all
-  git commit -m "$message"
-  git push
+  [[ `jobs -l | wc -l` -gt 0 ]] && echo "⚙ "
 }
 
 function makeBackUpFile() {

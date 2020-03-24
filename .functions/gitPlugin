@@ -8,7 +8,7 @@ function gitPlugin () {
         if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then
             echo -ne ""
         else
-            echo -ne "$branch"
+            echo -ne "$branch\e[0m "
         fi
     fi
 }
