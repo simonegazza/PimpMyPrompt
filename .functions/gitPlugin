@@ -1,60 +1,16 @@
 # vim: set syntax=sh:
+source $PMP/.env
 
 function gitPlugin () {
-  # Get the repository's branch for this repo
-  gitString=''  #value return string
+    branch=`git symbolic-ref --short HEAD 2>/dev/null`
 
-  # Get the current branch
-  branch=`git symbolic-ref --short HEAD 2>/dev/null`
-
-  # Check if git is installed
-  if [[ `git --version` ]]; then
-    # Check if it is a repository and if not so, just print the arrow to end the line
-    if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then
-      gitString+="\e[49m\e[34m$(arrow)"
-
-    # Check if the branch is up to date with no mods, if so print a green banner with the branch symbol and the branch name
-    else if [[ `git status 2>&1` =~ 'Your branch is up to date' ]] && [[ `git status | wc -l` -le "4" ]]; then
-      gitString+="\e[42m\e[34m"
-      gitString+="$(arrow) "
-      gitString+="\e[30m"
-      gitString+=$'\u2387'
-      gitString+=" \e[42m $branch \e[32m\e[49m$(arrow)"
-
-    else
-      # Yellow banner
-      gitString+="\e[43m\e[38;5;04m$(arrow) \e[30m"
-      gitString+=$'\u2387'
-      gitString+="  $branch "
-
-      # Print a plus meaning you have to do a `git add .`
-      if [[ `git status 2>&1` =~ 'Changes not staged for commit' ]]; then
-        gitString+=$'\u271A'
-        gitString+=" "
-      fi
-
-      # A big dot meaning you have to 'git commit'
-      if [[ `git status 2>&1` =~ 'Changes to be committed' ]]; then
-        gitString+=$'\u25CF'
-        gitString+=" "
-      fi
-
-      # An arrow pointing upwards, meaning you can push
-      if [[ `git status 2>&1` =~ 'Your branch is ahead of' ]]; then
-        gitString+=$'\u21D1'
-        gitString+=" "
-      fi
-
-      # Ending part of the string
-      gitString+="\e[49m\e[33m$(arrow)"
+    if [[ `git --version` ]]; then
+        if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then
+            echo -ne ""
+        else
+            echo -ne "$branch"
+        fi
     fi
-  fi
-  echo -ne "$gitString"
-
-  # If git isn't installed just always print the arrow
-  else
-    echo -ne "\e[49m\e[34m$(arrow)"
-  fi
 }
 
 

@@ -53,10 +53,10 @@ autocmd BufNewFile *.hh 0r $PMP/vim/skeleton.hh
 autocmd BufNewFile *.tex 0r $PMP/vim/skeleton.tex
 autocmd BufNewFile *.rs 0r $PMP/vim/skeleton.rs
 autocmd BufWritePre * %s/\s\+$//e "Deletes all whitespaces at the end of the line
-autocmd BufWritePost *.tex :!pdflatex % && evince %:r.pdf &
+autocmd BufWritePost *.tex,*.zed :!pdflatex % && evince %:r.pdf &
 
 "Colorscheme
-source $PMP/vim/VimPMPTheme.vim "Need to source it because I don't want to interfere whith other colors
+source /home/simone/Repo/personal/PimpMyPrompt/vim/VimPMPTheme.vim "Need to source it because I don't want to interfere whith other colors
 
 "Settings for statusLine
 set laststatus=2

@@ -31,18 +31,12 @@ shopt -s histappend
 # make "less" more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-PS1="$background_black"                             #background color black
-PS1+="$text_red\$(error)"                           #text color re and dcalling the error function to check if the last command failed
-PS1+="\$(docker_emoji)"                             #emoji if in docker
-PS1+="$text_yellow\$(bgjobs)"                       #text color yellow and calling the function to check for backgorund jobs
-PS1+=" $text_green\D{%d/%m-%T} "                    #dates in strftime(3): Day/month - hour:minute:second
-PS1+='$(color_name)'                                #calling the function to check user color based on the user
-PS1+="$text_white@"                                 #color for @ (white)
-PS1+="$text_yellow\h$text_black "                   #host
-PS1+="$background_blue$(arrow)$text_black "         #ending black arrow
-PS1+='\w'                                           #relative folder path
-PS1+="$text_blue$background_blue \$(gitPlugin)"     #adjusting colours and calling git plugin
-PS1+="$background_default\n"                        #next line
-PS1+="$text_blue$(block)$(arrow)$remove_text_background  ";       #second row with an arrow and a block
+PS1="${background_default}"
+PS1+="${text_red}\$(error)"
+PS1+="${text_yellow}\$(bgjobs)"
+PS1+="\u${text_white}@${text_blue}\h "
+PS1+="${text_green}\w "
+PS1+="${text_underlined}${text_dim}${text_gray}\$(gitPlugin)${remove_text_background} "
+PS1+="> "
 
-PS2="$text_blue$background_default$(block)$(arrow)$remove_text_background  ";
+PS2="${text_blue}~>${text_white}"
