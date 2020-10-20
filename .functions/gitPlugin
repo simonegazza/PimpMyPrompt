@@ -1,22 +1,15 @@
 # vim: set syntax=sh:
-source $PMP/.env
-
-function gitPlugin () {
-    branch=`git symbolic-ref --short HEAD 2>/dev/null`
-
-    if [[ `git --version` ]]; then
-        if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then
-            echo -ne ""
-        else
-            echo -ne "$branch\e[0m "
-        fi
+function gitPlugin() {
+    if [[ `git status 2>&1` =~ 'ot a git repository' ]]; then
+        echo -n ""
+    else
+        echo -n `git rev-parse --abbrev-ref HEAD 2>/dev/null`
     fi
 }
 
-
 function gitPushAll() {
   if [ "$#" -eq "0" ]; then
-    message="Mods applied to the Repo"
+    message="Apply mods"
   else
     message="$1"
   fi

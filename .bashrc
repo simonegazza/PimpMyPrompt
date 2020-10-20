@@ -31,12 +31,26 @@ shopt -s histappend
 # make "less" more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# enable bash completion in interactive shells
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
+if [ "$USER" = "root" ]; then #if the user is root than the username color is red
+  user_color="\[\e[31m\]"
+else                        #otherwise print just the user name
+  user_color="\[\e[33m\]"
+fi
+
 PS1="${background_default}"
 PS1+="${text_red}\$(error)"
 PS1+="${text_gray}\$(bgjobs)"
-PS1+="${text_yellow}\$(user_color)${text_white}@${text_blue}\h "
+PS1+="${user_color}$USER${text_white}@${text_blue}\h "
 PS1+="${text_green}\w "
-PS1+="${text_underlined}${text_dim}${text_gray}\$(gitPlugin)${remove_text_background}"
-PS1+="> "
+PS1+="${text_underlined}${text_dark_gray}\$(gitPlugin)${remove_text_background} > "
 
 PS2="${text_blue}=>${text_white}"

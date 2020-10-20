@@ -7,7 +7,7 @@ alias lsh='ls -lah'
 alias c='clear'
 alias cl='clear && pwd && ls -la'
 if [ -x /usr/bin/dircolors ]; then #ls with more color
-	test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
   alias ls='ls --color=auto'
   alias dir='dir --color=auto'
   alias vdir='vdir --color=auto'
@@ -20,6 +20,7 @@ alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias ......='cd ../../../../../'
+alias git='LANG=us_US git'
 alias ggg=gitPushAll
 alias gits="git status"
 alias tree=call_tree
@@ -32,4 +33,3 @@ alias restart='sudo systemctl restart '
 alias stop='sudo systemctl stop '
 alias install='sudo apt-get install'
 alias sudorc='sudo -E -s'
-alias s='sshrc'

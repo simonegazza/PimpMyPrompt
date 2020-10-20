@@ -3,4 +3,6 @@
 pmp.d/*
 !pmp.d/.gitkeep
 
-.cd
+vim/run/*
+
+!**/.gitkeep

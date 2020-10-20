@@ -1,10 +1,13 @@
 "Setting varibales
-let mapleader = " "
+let mapleader=" "
 let PMP=$PMP
 
 "General
 syntax enable
+filetype plugin on
 filetype indent on
+set path+=**
+set tags+=./.tags
 set number
 set nocompatible
 set nostartofline
@@ -26,7 +29,14 @@ set clipboard=unnamedplus
 set ffs=unix,dos,mac
 set termguicolors
 set undofile
-set undodir=~/.vim/undodir
+
+"Overrides vim path
+set undodir=$PMP/vim/run/undo
+set directory=$PMP/vim/run/swap
+set backupdir=$PMP/vim/run/backup
+set viewdir=$PMP/vim/run/view
+set viminfo+='1000,n$PMP/vim/run/viminfo
+set runtimepath=$PMP/run/vim,$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
 
 "Autocompletion
 set wildmenu
@@ -41,27 +51,30 @@ map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
+inoremap <C-@> <C-n>
 
 "Autocommands
 autocmd FileType make setlocal noexpandtab
-autocmd BufNewFile *.sh 0r $PMP/vim/skeleton.sh
-autocmd BufNewFile *.bash 0r $PMP/vim/skeleton.sh
-autocmd BufNewFile *.py 0r $PMP/vim/skeleton.py
-autocmd BufNewFile *.cpp 0r $PMP/vim/skeleton.cpp
-autocmd BufNewFile *.cc 0r $PMP/vim/skeleton.cpp
-autocmd BufNewFile *.hh 0r $PMP/vim/skeleton.hh
-autocmd BufNewFile *.tex 0r $PMP/vim/skeleton.tex
-autocmd BufNewFile *.rs 0r $PMP/vim/skeleton.rs
+autocmd BufRead *.rs :setlocal tags=./.tags;/,$RUST_SRC_PATH/.tags,$RUST_SRC_PATH/rusty-tags.vi
+autocmd BufNewFile *.sh 0r $PMP/vim/skeletons/skeleton.sh
+autocmd BufNewFile *.bash 0r $PMP/vim/skeletons/skeleton.sh
+autocmd BufNewFile *.py 0r $PMP/vim/skeletons/skeleton.py
+autocmd BufNewFile *.cpp 0r $PMP/vim/skeletons/skeleton.cpp
+autocmd BufNewFile *.cc 0r $PMP/vim/skeletons/skeleton.cpp
+autocmd BufNewFile *.hh 0r $PMP/vim/skeletons/skeleton.hh
+autocmd BufNewFile *.tex 0r $PMP/vim/skeletons/skeleton.tex
+autocmd BufNewFile *.rs 0r $PMP/vim/skeletons/skeleton.rs
 autocmd BufWritePre * %s/\s\+$//e "Deletes all whitespaces at the end of the line
 autocmd BufWritePost *.tex,*.zed :!pdflatex % && evince %:r.pdf &
+autocmd BufWritePost *.rs :silent! exec "!rusty-tags vi --quiet --start-dir=" . expand('%:p:h') . "&" | redraw!
 
 "Colorscheme
-source /home/simone/Repo/personal/PimpMyPrompt/vim/VimPMPTheme.vim "Need to source it because I don't want to interfere whith other colors
+source $PMP/vim/theme/pmpTheme.vim "Need to source it because I don't want to interfere whith other colors
 
 "Settings for statusLine
 set laststatus=2
 set statusline=
-set statusline+=%1*\"%<%F\"\                          "File path, modified amd readonly
+set statusline+=%1*\"%<%F\"\                        "File path, modified amd readonly
 set statusline+=%3*│                                "|
 set statusline+=%2*\ %Y\                            "File type
 set statusline+=%3*│                                "|
