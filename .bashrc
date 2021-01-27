@@ -28,6 +28,9 @@ shopt -s checkwinsize
 # append to the history file, don't overwrite it
 shopt -s histappend
 
+#Expand variables into folders
+shopt -s direxpand
+
 # make "less" more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 

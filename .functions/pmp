@@ -14,7 +14,3 @@ function makeBackUpFile() {
   cp $1 $1.bakup
   echo "made $1 backup file"
 }
-
-function call_search() {
-  fgrep -r $1 .
-}
