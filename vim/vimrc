@@ -25,7 +25,6 @@ set colorcolumn=150
 set showmatch
 set incsearch
 set hlsearch
-set clipboard=unnamedplus
 set ffs=unix,dos,mac
 set termguicolors
 set undofile
@@ -55,9 +54,8 @@ inoremap <C-@> <C-n>
 
 "Autocommands
 autocmd FileType make setlocal noexpandtab
-autocmd BufRead *.rs :setlocal tags=./.tags;/,$RUST_SRC_PATH/.tags,$RUST_SRC_PATH/rusty-tags.vi
 autocmd BufNewFile *.sh 0r $PMP/vim/skeletons/skeleton.sh
-autocmd BufNewFile *.bash 0r $PMP/vim/skeletons/skeleton.sh
+autocmd BufNewFile *.bash 0r $PMP/vim/skeletons/skeleton.bash
 autocmd BufNewFile *.py 0r $PMP/vim/skeletons/skeleton.py
 autocmd BufNewFile *.cpp 0r $PMP/vim/skeletons/skeleton.cpp
 autocmd BufNewFile *.cc 0r $PMP/vim/skeletons/skeleton.cpp
@@ -65,8 +63,7 @@ autocmd BufNewFile *.hh 0r $PMP/vim/skeletons/skeleton.hh
 autocmd BufNewFile *.tex 0r $PMP/vim/skeletons/skeleton.tex
 autocmd BufNewFile *.rs 0r $PMP/vim/skeletons/skeleton.rs
 autocmd BufWritePre * %s/\s\+$//e "Deletes all whitespaces at the end of the line
-autocmd BufWritePost *.tex,*.zed :!pdflatex % && evince %:r.pdf &
-autocmd BufWritePost *.rs :silent! exec "!rusty-tags vi --quiet --start-dir=" . expand('%:p:h') . "&" | redraw!
+autocmd BufWritePost *.tex,*.zed :!pdflatex % &&  %:r.pdf &
 
 "Jump to the last position when reopening a file
 if has("autocmd")

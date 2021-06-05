@@ -29,7 +29,7 @@ shopt -s checkwinsize
 shopt -s histappend
 
 #Expand variables into folders
-shopt -s direxpand
+shopt -s direxpand 2>/dev/null
 
 # make "less" more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
