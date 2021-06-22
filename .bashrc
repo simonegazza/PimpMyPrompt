@@ -50,10 +50,10 @@ else                        #otherwise print just the user name
 fi
 
 PS1="${background_default}"
-PS1+="${text_red}\$(error)"
+PS1="${text_red}\$(error)"
 PS1+="${text_gray}\$(bgjobs)"
 PS1+="${user_color}$USER${text_white}@${text_blue}\h "
 PS1+="${text_green}\w "
-PS1+="${text_underlined}${text_dark_gray}\$(gitPlugin)${remove_text_background} > "
+PS1+="${text_underlined}${text_white}\$(gitPlugin) ${text_yellow}>${remove_text_background} "
 
 PS2="${text_blue}=>${text_white}"
